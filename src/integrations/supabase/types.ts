@@ -14,7 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      inquiries: {
+        Row: {
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          listing_id: string
+          message: string
+          sender_id: string
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          listing_id: string
+          message: string
+          sender_id: string
+        }
+        Update: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          listing_id?: string
+          message?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiries_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings: {
+        Row: {
+          category: Database["public"]["Enums"]["listing_category"]
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          image_url: string | null
+          kind: Database["public"]["Enums"]["listing_kind"]
+          location: string
+          owner_id: string
+          price: number
+          status: Database["public"]["Enums"]["listing_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          kind: Database["public"]["Enums"]["listing_kind"]
+          location?: string
+          owner_id: string
+          price?: number
+          status?: Database["public"]["Enums"]["listing_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["listing_category"]
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          kind?: Database["public"]["Enums"]["listing_kind"]
+          location?: string
+          owner_id?: string
+          price?: number
+          status?: Database["public"]["Enums"]["listing_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +135,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      listing_category:
+        | "car"
+        | "house"
+        | "land"
+        | "company"
+        | "business_idea"
+        | "office"
+      listing_kind: "sale" | "rent"
+      listing_status: "active" | "draft" | "sold" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +270,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      listing_category: [
+        "car",
+        "house",
+        "land",
+        "company",
+        "business_idea",
+        "office",
+      ],
+      listing_kind: ["sale", "rent"],
+      listing_status: ["active", "draft", "sold", "archived"],
+    },
   },
 } as const
