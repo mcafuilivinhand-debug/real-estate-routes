@@ -52,7 +52,7 @@ function BrowsePage() {
   });
 
   function update(patch: Partial<{ kind: Kind; category?: CategoryId; q?: string; min?: number; max?: number }>) {
-    navigate({ search: (prev) => ({ ...prev, ...patch }) as never, replace: true });
+    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }) as never, replace: true });
   }
 
   return (
