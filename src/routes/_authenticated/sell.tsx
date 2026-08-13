@@ -74,9 +74,12 @@ function SellPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-12">
-      <p className="text-xs uppercase tracking-[0.2em] text-primary">New listing</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-primary">Place it with the broker</p>
       <h1 className="font-editorial text-4xl mt-2">Tell us what you're offering</h1>
-      <p className="text-muted-foreground mt-2">A few details is all it takes.</p>
+      <p className="text-muted-foreground mt-2">
+        We review it, put it on the market, and handle every buyer and every price
+        conversation for you. Your details are never shown publicly.
+      </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-5">
         <div>
