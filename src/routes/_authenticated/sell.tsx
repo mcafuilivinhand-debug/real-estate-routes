@@ -60,11 +60,12 @@ function SellPage() {
       currency: parsed.data.currency.toUpperCase(),
       location: parsed.data.location ?? "",
       image_url: parsed.data.image_url || null,
-      status: "active",
+      status: "pending",
     }).select("id").single();
     setSaving(false);
     if (error) return setErr(error.message);
-    navigate({ to: "/listings/$id", params: { id: data.id } });
+    void data;
+    navigate({ to: "/dashboard" });
   }
 
   return (
