@@ -138,9 +138,8 @@ function ListingPage() {
           <div className="mt-8 card-warm p-6">
             <p className="text-xs uppercase tracking-widest text-primary">How this works</p>
             <p className="mt-2 text-foreground/90 leading-relaxed">
-              {BROKER_NAME} holds this listing on behalf of the owner. You never deal with the owner
-              directly — you talk to us, you negotiate the price with us, and we carry your offer to
-              the other side and bring their answer back to you.
+              Send {BROKER_NAME} your offer and any questions. Our team reviews it, confirms
+              availability and gets back to you with the answer — all in one private thread.
             </p>
           </div>
         </div>
