@@ -17,6 +17,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ListingsIdRouteImport } from './routes/listings.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedBrokerRouteImport } from './routes/_authenticated/broker'
+import { Route as AuthenticatedDealsIndexRouteImport } from './routes/_authenticated/deals.index'
+import { Route as AuthenticatedDealsIdRouteImport } from './routes/_authenticated/deals.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -57,24 +60,45 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBrokerRoute = AuthenticatedBrokerRouteImport.update({
+  id: '/broker',
+  path: '/broker',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDealsIndexRoute = AuthenticatedDealsIndexRouteImport.update({
+  id: '/deals/',
+  path: '/deals/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDealsIdRoute = AuthenticatedDealsIdRouteImport.update({
+  id: '/deals/$id',
+  path: '/deals/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/broker': typeof AuthenticatedBrokerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/deals/$id': typeof AuthenticatedDealsIdRoute
+  '/deals/': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/broker': typeof AuthenticatedBrokerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/deals/$id': typeof AuthenticatedDealsIdRoute
+  '/deals': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -83,9 +107,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/broker': typeof AuthenticatedBrokerRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/_authenticated/deals/$id': typeof AuthenticatedDealsIdRoute
+  '/_authenticated/deals/': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -94,18 +121,24 @@ export interface FileRouteTypes {
     | '/auth'
     | '/browse'
     | '/sitemap.xml'
+    | '/broker'
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/deals/$id'
+    | '/deals/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/browse'
     | '/sitemap.xml'
+    | '/broker'
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/deals/$id'
+    | '/deals'
   id:
     | '__root__'
     | '/'
@@ -113,9 +146,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/browse'
     | '/sitemap.xml'
+    | '/_authenticated/broker'
     | '/_authenticated/dashboard'
     | '/_authenticated/sell'
     | '/listings/$id'
+    | '/_authenticated/deals/$id'
+    | '/_authenticated/deals/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -185,17 +221,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/broker': {
+      id: '/_authenticated/broker'
+      path: '/broker'
+      fullPath: '/broker'
+      preLoaderRoute: typeof AuthenticatedBrokerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/deals/': {
+      id: '/_authenticated/deals/'
+      path: '/deals'
+      fullPath: '/deals/'
+      preLoaderRoute: typeof AuthenticatedDealsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/deals/$id': {
+      id: '/_authenticated/deals/$id'
+      path: '/deals/$id'
+      fullPath: '/deals/$id'
+      preLoaderRoute: typeof AuthenticatedDealsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBrokerRoute: typeof AuthenticatedBrokerRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedSellRoute: typeof AuthenticatedSellRoute
+  AuthenticatedDealsIdRoute: typeof AuthenticatedDealsIdRoute
+  AuthenticatedDealsIndexRoute: typeof AuthenticatedDealsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBrokerRoute: AuthenticatedBrokerRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedSellRoute: AuthenticatedSellRoute,
+  AuthenticatedDealsIdRoute: AuthenticatedDealsIdRoute,
+  AuthenticatedDealsIndexRoute: AuthenticatedDealsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

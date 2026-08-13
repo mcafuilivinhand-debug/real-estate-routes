@@ -7,8 +7,12 @@ import { CATEGORIES, RENTABLE, SELLABLE, type Kind, type CategoryId } from "@/li
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({
     meta: [
-      { title: "Create a listing — ApexAnchor" },
-      { name: "description", content: "List your home, car, land, office, company or business idea on ApexAnchor." },
+      { title: "Place a listing with the broker — ApexAnchor" },
+      { name: "description", content: "Hand your home, car, land, office, company or business idea to the ApexAnchor broker, who negotiates with buyers on your behalf." },
+      { property: "og:title", content: "Place a listing with the ApexAnchor broker" },
+      { property: "og:description", content: "The broker markets your asset and negotiates with buyers on your behalf." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SellPage,
@@ -60,18 +64,22 @@ function SellPage() {
       currency: parsed.data.currency.toUpperCase(),
       location: parsed.data.location ?? "",
       image_url: parsed.data.image_url || null,
-      status: "active",
+      status: "pending",
     }).select("id").single();
     setSaving(false);
     if (error) return setErr(error.message);
-    navigate({ to: "/listings/$id", params: { id: data.id } });
+    void data;
+    navigate({ to: "/dashboard" });
   }
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-12">
-      <p className="text-xs uppercase tracking-[0.2em] text-primary">New listing</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-primary">Place it with the broker</p>
       <h1 className="font-editorial text-4xl mt-2">Tell us what you're offering</h1>
-      <p className="text-muted-foreground mt-2">A few details is all it takes.</p>
+      <p className="text-muted-foreground mt-2">
+        We review it, put it on the market, and handle every buyer and every price
+        conversation for you. Your details are never shown publicly.
+      </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-5">
         <div>
@@ -131,7 +139,7 @@ function SellPage() {
 
         {err && <p className="text-sm text-destructive">{err}</p>}
         <button disabled={saving} className="btn-primary w-full disabled:opacity-60" type="submit">
-          {saving ? "Publishing…" : "Publish listing"}
+          {saving ? "Sending to the broker…" : "Send to the broker"}
         </button>
       </form>
     </div>

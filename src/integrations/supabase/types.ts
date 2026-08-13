@@ -14,6 +14,94 @@ export type Database = {
   }
   public: {
     Tables: {
+      deal_messages: {
+        Row: {
+          body: string
+          created_at: string
+          deal_id: string
+          from_broker: boolean
+          id: string
+          offer_amount: number | null
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          deal_id: string
+          from_broker?: boolean
+          id?: string
+          offer_amount?: number | null
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          deal_id?: string
+          from_broker?: boolean
+          id?: string
+          offer_amount?: number | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_messages_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          client_id: string
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          currency: string
+          id: string
+          listing_id: string
+          offer_amount: number | null
+          side: Database["public"]["Enums"]["deal_side"]
+          status: Database["public"]["Enums"]["deal_status"]
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          listing_id: string
+          offer_amount?: number | null
+          side?: Database["public"]["Enums"]["deal_side"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          listing_id?: string
+          offer_amount?: number | null
+          side?: Database["public"]["Enums"]["deal_side"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inquiries: {
         Row: {
           contact_email: string | null
@@ -127,14 +215,46 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      broker_exists: { Args: never; Returns: boolean }
+      claim_broker_role: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "broker" | "user"
+      deal_side: "buy" | "sell"
+      deal_status: "open" | "negotiating" | "agreed" | "closed" | "declined"
       listing_category:
         | "car"
         | "house"
@@ -143,7 +263,7 @@ export type Database = {
         | "business_idea"
         | "office"
       listing_kind: "sale" | "rent"
-      listing_status: "active" | "draft" | "sold" | "archived"
+      listing_status: "active" | "draft" | "sold" | "archived" | "pending"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -271,6 +391,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["broker", "user"],
+      deal_side: ["buy", "sell"],
+      deal_status: ["open", "negotiating", "agreed", "closed", "declined"],
       listing_category: [
         "car",
         "house",
@@ -280,7 +403,7 @@ export const Constants = {
         "office",
       ],
       listing_kind: ["sale", "rent"],
-      listing_status: ["active", "draft", "sold", "archived"],
+      listing_status: ["active", "draft", "sold", "archived", "pending"],
     },
   },
 } as const
