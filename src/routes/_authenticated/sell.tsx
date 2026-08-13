@@ -139,7 +139,7 @@ function SellPage() {
 
         {err && <p className="text-sm text-destructive">{err}</p>}
         <button disabled={saving} className="btn-primary w-full disabled:opacity-60" type="submit">
-          {saving ? "Publishing…" : "Publish listing"}
+          {saving ? "Sending to the broker…" : "Send to the broker"}
         </button>
       </form>
     </div>
