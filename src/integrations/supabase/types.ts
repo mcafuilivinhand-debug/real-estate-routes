@@ -241,6 +241,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      broker_exists: { Args: never; Returns: boolean }
+      claim_broker_role: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
