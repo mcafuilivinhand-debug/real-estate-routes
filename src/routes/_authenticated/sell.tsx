@@ -7,8 +7,12 @@ import { CATEGORIES, RENTABLE, SELLABLE, type Kind, type CategoryId } from "@/li
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({
     meta: [
-      { title: "Create a listing — ApexAnchor" },
-      { name: "description", content: "List your home, car, land, office, company or business idea on ApexAnchor." },
+      { title: "Place a listing with the broker — ApexAnchor" },
+      { name: "description", content: "Hand your home, car, land, office, company or business idea to the ApexAnchor broker, who negotiates with buyers on your behalf." },
+      { property: "og:title", content: "Place a listing with the ApexAnchor broker" },
+      { property: "og:description", content: "The broker markets your asset and negotiates with buyers on your behalf." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SellPage,
