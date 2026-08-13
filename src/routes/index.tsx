@@ -5,8 +5,12 @@ import { CATEGORIES } from "@/lib/marketplace";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ApexAnchor — Property, vehicles and ventures, warmly curated" },
-      { name: "description", content: "A slower, more considered marketplace: houses, cars, land, office space, companies and business ideas — for sale or rent." },
+      { title: "ApexAnchor — Your broker for property, vehicles and ventures" },
+      { name: "description", content: "Houses, cars, land, office space, companies and business ideas — for sale or rent. Every price is negotiated through ApexAnchor, your broker between buyer and seller." },
+      { property: "og:title", content: "ApexAnchor — Your broker between buyers and sellers" },
+      { property: "og:description", content: "Buy, sell or rent through one trusted broker. You negotiate with us; we handle the other side." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -19,14 +23,15 @@ function Index() {
       <section className="relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-5 pt-16 pb-8 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-primary mb-5">Est. 2026 · A quieter marketplace</p>
+            <p className="uppercase tracking-[0.2em] text-xs text-primary mb-5">Est. 2026 · Broker &amp; marketplace</p>
             <h1 className="font-editorial text-5xl md:text-6xl leading-[1.05]">
-              Property, vehicles<br />and ventures —<br />
-              <em className="text-primary not-italic">warmly curated.</em>
+              One broker between<br />every buyer<br />
+              <em className="text-primary not-italic">and every seller.</em>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-md">
-              Buy or rent homes, cars, land and office space. Or take on an
-              established company or a business idea looking for its next owner.
+              Buy or rent homes, cars, land and office space — or take on a whole
+              company. You don't chase owners: you negotiate the price with us,
+              and we settle it with the other side.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/browse" search={{ kind: "sale" }} className="btn-primary">Browse for sale</Link>
@@ -90,18 +95,37 @@ function Index() {
         </Link>
       </section>
 
+      {/* How brokering works */}
+      <section className="max-w-6xl mx-auto px-5 mt-24">
+        <p className="text-xs uppercase tracking-[0.2em] text-primary">How it works</p>
+        <h2 className="font-editorial text-4xl mt-2">We stand in the middle</h2>
+        <div className="mt-8 grid md:grid-cols-3 gap-px bg-border rounded-md overflow-hidden">
+          {[
+            { n: "01", t: "Sellers hand it over", d: "Owners place a house, car, land, office or company with us. We review it before it ever goes on the market." },
+            { n: "02", t: "Buyers negotiate with us", d: "Interested? Make your offer to ApexAnchor. No cold calls to strangers, no exposed phone numbers." },
+            { n: "03", t: "We close the gap", d: "We carry offers and counter-offers between both sides until the price is agreed, then walk the deal to the finish." },
+          ].map((s) => (
+            <div key={s.n} className="bg-background p-8">
+              <p className="font-editorial text-3xl text-primary">{s.n}</p>
+              <p className="font-editorial text-2xl mt-2">{s.t}</p>
+              <p className="text-sm text-muted-foreground mt-2">{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="max-w-6xl mx-auto px-5 mt-24">
         <div className="border-t border-border pt-16 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h2 className="font-editorial text-4xl">Have something to list?</h2>
+            <h2 className="font-editorial text-4xl">Have something to sell or rent out?</h2>
             <p className="text-muted-foreground mt-3 max-w-md">
-              Create an account and publish a listing in a few minutes. Buyers
-              and renters reach you directly.
+              Hand it to us. We review it, market it, screen the buyers and
+              negotiate on your behalf — your details never go public.
             </p>
           </div>
           <div className="flex md:justify-end gap-3">
-            <Link to="/sell" className="btn-primary">Create a listing</Link>
+            <Link to="/sell" className="btn-primary">Place it with the broker</Link>
             <Link to="/auth" className="btn-outline">Sign in</Link>
           </div>
         </div>
