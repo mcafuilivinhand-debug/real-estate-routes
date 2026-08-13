@@ -9,6 +9,10 @@ export const CATEGORIES = [
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
 export type Kind = "sale" | "rent";
+export type DealStatus = "open" | "negotiating" | "agreed" | "closed" | "declined";
+export type DealSide = "buy" | "sell";
+
+export const BROKER_NAME = "ApexAnchor";
 
 export function categoryLabel(id: string) {
   return CATEGORIES.find((c) => c.id === id)?.label ?? id;
@@ -24,3 +28,25 @@ export function formatPrice(price: number, currency: string, kind: Kind) {
   }).format(price);
   return kind === "rent" ? `${formatted} / mo` : formatted;
 }
+
+export function formatAmount(amount: number, currency: string) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency", currency: currency || "USD", maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+export const DEAL_STATUS_LABEL: Record<DealStatus, string> = {
+  open: "Awaiting broker",
+  negotiating: "In negotiation",
+  agreed: "Terms agreed",
+  closed: "Closed",
+  declined: "Declined",
+};
+
+export const LISTING_STATUS_LABEL: Record<string, string> = {
+  pending: "Awaiting broker review",
+  active: "Live on the market",
+  draft: "Draft",
+  sold: "Sold",
+  archived: "Archived",
+};
