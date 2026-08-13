@@ -18,6 +18,7 @@ import { Route as ListingsIdRouteImport } from './routes/listings.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDealsIndexRouteImport } from './routes/_authenticated/deals.index'
+import { Route as AuthenticatedDealsIdRouteImport } from './routes/_authenticated/deals.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -63,6 +64,11 @@ const AuthenticatedDealsIndexRoute = AuthenticatedDealsIndexRouteImport.update({
   path: '/deals/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDealsIdRoute = AuthenticatedDealsIdRouteImport.update({
+  id: '/deals/$id',
+  path: '/deals/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/deals/$id': typeof AuthenticatedDealsIdRoute
   '/deals/': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/deals/$id': typeof AuthenticatedDealsIdRoute
   '/deals': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRoutesById {
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/_authenticated/deals/$id': typeof AuthenticatedDealsIdRoute
   '/_authenticated/deals/': typeof AuthenticatedDealsIndexRoute
 }
 export interface FileRouteTypes {
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/deals/$id'
     | '/deals/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/deals/$id'
     | '/deals'
   id:
     | '__root__'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/sell'
     | '/listings/$id'
+    | '/_authenticated/deals/$id'
     | '/_authenticated/deals/'
   fileRoutesById: FileRoutesById
 }
@@ -204,18 +216,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDealsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/deals/$id': {
+      id: '/_authenticated/deals/$id'
+      path: '/deals/$id'
+      fullPath: '/deals/$id'
+      preLoaderRoute: typeof AuthenticatedDealsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedSellRoute: typeof AuthenticatedSellRoute
+  AuthenticatedDealsIdRoute: typeof AuthenticatedDealsIdRoute
   AuthenticatedDealsIndexRoute: typeof AuthenticatedDealsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedSellRoute: AuthenticatedSellRoute,
+  AuthenticatedDealsIdRoute: AuthenticatedDealsIdRoute,
   AuthenticatedDealsIndexRoute: AuthenticatedDealsIndexRoute,
 }
 
