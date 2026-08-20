@@ -52,6 +52,8 @@ function ListingPage() {
   const [offer, setOffer] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [sending, setSending] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -67,6 +69,11 @@ function ListingPage() {
       contact_phone: contactPhone,
     });
     if (!parsed.success) return setErr(parsed.error.issues[0].message);
+
+    const isRental = listing?.kind === "rent";
+    if (isRental && startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+      return setErr("The end date must come after the start date");
+    }
     setSending(true);
 
     const amount = typeof parsed.data.offer_amount === "number" ? parsed.data.offer_amount : null;
@@ -81,6 +88,8 @@ function ListingPage() {
         currency: listing?.currency ?? "USD",
         contact_email: parsed.data.contact_email || null,
         contact_phone: parsed.data.contact_phone || null,
+        start_date: isRental && startDate ? startDate : null,
+        end_date: isRental && endDate ? endDate : null,
       })
       .select("id")
       .single();
@@ -155,11 +164,29 @@ function ListingPage() {
           </div>
 
           <div className="card-warm p-6">
-            <p className="font-editorial text-xl">Make an offer</p>
-            <p className="text-sm text-muted-foreground mt-1">Name your price. We'll take it from there.</p>
+            <p className="font-editorial text-xl">{kind === "rent" ? "Request these dates" : "Make an offer"}</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {kind === "rent" ? "Pick your dates and name your rate." : "Name your price. We'll take it from there."}
+            </p>
             <form onSubmit={startDeal} className="mt-4 space-y-3">
+              {kind === "rent" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs uppercase tracking-widest text-muted-foreground">From</label>
+                    <input className="input-field mt-1" type="date" value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="text-xs uppercase tracking-widest text-muted-foreground">To</label>
+                    <input className="input-field mt-1" type="date" value={endDate} min={startDate || undefined}
+                      onChange={(e) => setEndDate(e.target.value)} />
+                  </div>
+                </div>
+              )}
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Your offer ({listing.currency})</label>
+                <label className="text-xs uppercase tracking-widest text-muted-foreground">
+                  {kind === "rent" ? `Your monthly offer (${listing.currency})` : `Your offer (${listing.currency})`}
+                </label>
                 <input className="input-field mt-1" type="number" min="0" step="1" placeholder="Optional"
                   value={offer} onChange={(e) => setOffer(e.target.value)} />
               </div>
@@ -169,7 +196,7 @@ function ListingPage() {
               <input className="input-field" placeholder="Phone (optional)" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} maxLength={40} />
               {err && <p className="text-sm text-destructive">{err}</p>}
               <button disabled={sending} className="btn-primary w-full disabled:opacity-60" type="submit">
-                {sending ? "Sending…" : session ? "Send offer" : "Sign in to make an offer"}
+                {sending ? "Sending…" : session ? (kind === "rent" ? "Send request" : "Send offer") : "Sign in to continue"}
               </button>
             </form>
           </div>

@@ -25,7 +25,7 @@ function DealsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("deals")
-        .select("id, status, side, offer_amount, currency, created_at, listings(title, image_url)")
+        .select("id, status, side, offer_amount, currency, start_date, end_date, created_at, listings(title, image_url)")
         .eq("client_id", user.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;
@@ -56,6 +56,9 @@ function DealsPage() {
                   <p className="text-sm text-muted-foreground">
                     {d.side === "buy" ? "You're buying" : "You're selling"}
                     {d.offer_amount ? ` · Your offer ${formatAmount(Number(d.offer_amount), d.currency)}` : ""}
+                    {d.start_date && d.end_date
+                      ? ` · ${new Date(d.start_date).toLocaleDateString()} → ${new Date(d.end_date).toLocaleDateString()}`
+                      : ""}
                   </p>
                 </div>
                 <span className="text-xs uppercase tracking-widest text-primary shrink-0">
