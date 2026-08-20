@@ -5,10 +5,10 @@ import { CATEGORIES } from "@/lib/marketplace";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ApexAnchor — Your broker for property, vehicles and ventures" },
-      { name: "description", content: "Houses, cars, land, office space, companies and business ideas — for sale or rent. Every price is negotiated through ApexAnchor, your broker between buyer and seller." },
-      { property: "og:title", content: "ApexAnchor — Your broker between buyers and sellers" },
-      { property: "og:description", content: "Buy, sell or rent through one trusted broker. You negotiate with us; we handle the other side." },
+      { title: "ApexAnchor — Property, vehicles and ventures for sale or rent" },
+      { name: "description", content: "Houses, cars, land, office space, companies and business ideas — for sale or rent. Discover, compare and make offers in one place." },
+      { property: "og:title", content: "ApexAnchor — Buy, sell or rent with confidence" },
+      { property: "og:description", content: "Homes, cars, land, offices and companies — all in one marketplace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -23,7 +23,7 @@ function Index() {
       <section className="relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-5 pt-16 pb-8 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <p className="uppercase tracking-[0.2em] text-xs text-primary mb-5">Est. 2026 · Broker &amp; marketplace</p>
+            <p className="uppercase tracking-[0.2em] text-xs text-primary mb-5">Est. 2026 · Marketplace</p>
             <h1 className="font-editorial text-5xl md:text-6xl leading-[1.05]">
               One broker between<br />every buyer<br />
               <em className="text-primary not-italic">and every seller.</em>
@@ -34,8 +34,8 @@ function Index() {
               and we settle it with the other side.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/browse" search={{ kind: "sale" }} className="btn-primary">Browse for sale</Link>
-              <Link to="/browse" search={{ kind: "rent" }} className="btn-outline">Browse rentals</Link>
+              <Link to="/browse" search={{ kind: "sale" }} className="btn-primary">Browse to buy</Link>
+              <Link to="/browse" search={{ kind: "rent" }} className="btn-outline">Browse to rent</Link>
             </div>
           </div>
           <div className="relative">
@@ -85,13 +85,13 @@ function Index() {
           <p className="text-xs uppercase tracking-widest text-primary">For sale</p>
           <h3 className="font-editorial text-3xl mt-3">Own something lasting</h3>
           <p className="text-muted-foreground mt-3">Homes, land, cars and whole companies — vetted and ready.</p>
-          <p className="mt-6 text-sm">Browse for sale →</p>
+          <p className="mt-6 text-sm">Browse to buy →</p>
         </Link>
         <Link to="/browse" search={{ kind: "rent" }} className="card-warm p-10 hover:border-primary transition">
           <p className="text-xs uppercase tracking-widest text-primary">For rent</p>
           <h3 className="font-editorial text-3xl mt-3">Move in this month</h3>
           <p className="text-muted-foreground mt-3">Short and long-term homes, cars and office space near you.</p>
-          <p className="mt-6 text-sm">Browse rentals →</p>
+          <p className="mt-6 text-sm">Browse to rent →</p>
         </Link>
       </section>
 
@@ -125,7 +125,7 @@ function Index() {
             </p>
           </div>
           <div className="flex md:justify-end gap-3">
-            <Link to="/sell" className="btn-primary">Place it with the broker</Link>
+            <Link to="/sell" className="btn-primary">List an asset</Link>
             <Link to="/auth" className="btn-outline">Sign in</Link>
           </div>
         </div>
