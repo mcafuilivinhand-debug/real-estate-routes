@@ -120,8 +120,8 @@ function Index() {
           <div>
             <h2 className="font-editorial text-4xl">Have something to sell or rent out?</h2>
             <p className="text-muted-foreground mt-3 max-w-md">
-              Hand it to us. We review it, market it, screen the buyers and
-              negotiate on your behalf — your details never go public.
+              List it here. We review it, market it and screen every enquiry —
+              your personal details never go public.
             </p>
           </div>
           <div className="flex md:justify-end gap-3">
