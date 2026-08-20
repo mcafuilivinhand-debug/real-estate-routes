@@ -56,6 +56,9 @@ function DealsPage() {
                   <p className="text-sm text-muted-foreground">
                     {d.side === "buy" ? "You're buying" : "You're selling"}
                     {d.offer_amount ? ` · Your offer ${formatAmount(Number(d.offer_amount), d.currency)}` : ""}
+                    {d.start_date && d.end_date
+                      ? ` · ${new Date(d.start_date).toLocaleDateString()} → ${new Date(d.end_date).toLocaleDateString()}`
+                      : ""}
                   </p>
                 </div>
                 <span className="text-xs uppercase tracking-widest text-primary shrink-0">
