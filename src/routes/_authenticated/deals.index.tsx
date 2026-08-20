@@ -6,10 +6,10 @@ import { DEAL_STATUS_LABEL, formatAmount, type DealStatus } from "@/lib/marketpl
 export const Route = createFileRoute("/_authenticated/deals/")({
   head: () => ({
     meta: [
-      { title: "Your negotiations — ApexAnchor" },
-      { name: "description", content: "Track every negotiation you have running with the ApexAnchor broker." },
-      { property: "og:title", content: "Your negotiations — ApexAnchor" },
-      { property: "og:description", content: "Track every negotiation you have running with the ApexAnchor broker." },
+      { title: "Your enquiries — ApexAnchor" },
+      { name: "description", content: "Track every enquiry and offer you have running on ApexAnchor." },
+      { property: "og:title", content: "Your enquiries — ApexAnchor" },
+      { property: "og:description", content: "Track every enquiry and offer you have running on ApexAnchor." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -35,8 +35,8 @@ function DealsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-5 py-12">
-      <p className="text-xs uppercase tracking-[0.2em] text-primary">With your broker</p>
-      <h1 className="font-editorial text-4xl mt-2">Your negotiations</h1>
+      <p className="text-xs uppercase tracking-[0.2em] text-primary">Your activity</p>
+      <h1 className="font-editorial text-4xl mt-2">Your enquiries</h1>
 
       {!deals || deals.length === 0 ? (
         <p className="text-muted-foreground mt-6">

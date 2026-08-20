@@ -11,10 +11,10 @@ import {
 export const Route = createFileRoute("/_authenticated/deals/$id")({
   head: () => ({
     meta: [
-      { title: "Negotiation — ApexAnchor" },
-      { name: "description", content: "Your private negotiation thread with the ApexAnchor broker." },
-      { property: "og:title", content: "Negotiation — ApexAnchor" },
-      { property: "og:description", content: "Your private negotiation thread with the ApexAnchor broker." },
+      { title: "Your enquiry — ApexAnchor" },
+      { name: "description", content: "Your private message thread with the ApexAnchor team." },
+      { property: "og:title", content: "Your enquiry — ApexAnchor" },
+      { property: "og:description", content: "Your private message thread with the ApexAnchor team." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -100,7 +100,7 @@ function DealThread() {
 
   return (
     <div className="max-w-3xl mx-auto px-5 py-12">
-      <Link to="/deals" className="text-sm underline underline-offset-4 text-muted-foreground">← All negotiations</Link>
+      <Link to="/deals" className="text-sm underline underline-offset-4 text-muted-foreground">← All enquiries</Link>
 
       <div className="card-warm p-6 mt-4 flex gap-4 items-center">
         <div className="w-24 h-20 rounded bg-muted overflow-hidden shrink-0">
@@ -149,7 +149,7 @@ function DealThread() {
             <div key={m.id} className={`max-w-[85%] ${mine ? "ml-auto" : ""}`}>
               <div className={`rounded-md px-4 py-3 border ${mine ? "bg-accent/40 border-border" : "bg-background border-border"}`}>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {m.from_broker ? `${BROKER_NAME} broker` : mine ? "You" : "Client"}
+                  {m.from_broker ? BROKER_NAME : mine ? "You" : "Client"}
                 </p>
                 <p className="mt-1 whitespace-pre-wrap text-foreground/90">{m.body}</p>
                 {m.offer_amount ? (
@@ -165,7 +165,7 @@ function DealThread() {
       </div>
 
       <form onSubmit={send} className="mt-8 card-warm p-5 space-y-3">
-        <p className="font-editorial text-xl">{isBroker ? "Reply as the broker" : `Message ${BROKER_NAME}`}</p>
+        <p className="font-editorial text-xl">{isBroker ? "Reply as ApexAnchor" : `Message ${BROKER_NAME}`}</p>
         <textarea className="input-field min-h-[100px]" value={body} onChange={(e) => setBody(e.target.value)}
           maxLength={1000} placeholder={isBroker ? "Counter-offer, terms, next steps…" : "Counter, ask a question, or accept…"} />
         <div>

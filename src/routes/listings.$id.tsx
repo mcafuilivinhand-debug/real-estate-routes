@@ -9,9 +9,9 @@ export const Route = createFileRoute("/listings/$id")({
   head: () => ({
     meta: [
       { title: "Listing — ApexAnchor" },
-      { name: "description", content: "Listing details. Negotiate privately with the ApexAnchor broker." },
+      { name: "description", content: "Listing details, pricing and how to make an offer on ApexAnchor." },
       { property: "og:title", content: "Listing — ApexAnchor" },
-      { property: "og:description", content: "Negotiate this listing privately with the ApexAnchor broker." },
+      { property: "og:description", content: "Make a private offer on this listing through ApexAnchor." },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/listings/$id")({
 });
 
 const enquirySchema = z.object({
-  message: z.string().trim().min(5, "Tell the broker a little more").max(1000),
+  message: z.string().trim().min(5, "Tell us a little more").max(1000),
   offer_amount: z.union([z.coerce.number().positive(), z.literal("")]).optional(),
   contact_email: z.string().trim().email().max(255).optional().or(z.literal("")),
   contact_phone: z.string().trim().max(40).optional().or(z.literal("")),
@@ -87,7 +87,7 @@ function ListingPage() {
 
     if (error || !deal) {
       setSending(false);
-      return setErr(error?.message ?? "Could not start the negotiation");
+      return setErr(error?.message ?? "Could not send your enquiry");
     }
 
     const { error: msgErr } = await supabase.from("deal_messages").insert({
@@ -150,12 +150,12 @@ function ListingPage() {
             <p className="font-editorial text-3xl mt-1">{formatPrice(Number(listing.price), listing.currency, kind)}</p>
             <div className="rule my-5" />
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Handled by</p>
-            <p className="mt-1">{BROKER_NAME} — your broker</p>
+            <p className="mt-1">{BROKER_NAME}</p>
             <p className="text-sm text-muted-foreground mt-1">Seller details stay private.</p>
           </div>
 
           <div className="card-warm p-6">
-            <p className="font-editorial text-xl">Negotiate with the broker</p>
+            <p className="font-editorial text-xl">Make an offer</p>
             <p className="text-sm text-muted-foreground mt-1">Name your price. We'll take it from there.</p>
             <form onSubmit={startDeal} className="mt-4 space-y-3">
               <div>
@@ -169,7 +169,7 @@ function ListingPage() {
               <input className="input-field" placeholder="Phone (optional)" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} maxLength={40} />
               {err && <p className="text-sm text-destructive">{err}</p>}
               <button disabled={sending} className="btn-primary w-full disabled:opacity-60" type="submit">
-                {sending ? "Sending…" : session ? "Start negotiation" : "Sign in to negotiate"}
+                {sending ? "Sending…" : session ? "Send offer" : "Sign in to make an offer"}
               </button>
             </form>
           </div>
