@@ -25,13 +25,13 @@ function Index() {
           <div>
             <p className="uppercase tracking-[0.2em] text-xs text-primary mb-5">Est. 2026 · Marketplace</p>
             <h1 className="font-editorial text-5xl md:text-6xl leading-[1.05]">
-              One broker between<br />every buyer<br />
-              <em className="text-primary not-italic">and every seller.</em>
+              Homes, cars, land<br />and ventures<br />
+              <em className="text-primary not-italic">worth owning.</em>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-md">
               Buy or rent homes, cars, land and office space — or take on a whole
-              company. You don't chase owners: you negotiate the price with us,
-              and we settle it with the other side.
+              company. Every listing is reviewed before it goes live, and your
+              offer stays private.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/browse" search={{ kind: "sale" }} className="btn-primary">Browse to buy</Link>
