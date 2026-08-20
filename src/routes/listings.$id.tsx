@@ -164,11 +164,29 @@ function ListingPage() {
           </div>
 
           <div className="card-warm p-6">
-            <p className="font-editorial text-xl">Make an offer</p>
-            <p className="text-sm text-muted-foreground mt-1">Name your price. We'll take it from there.</p>
+            <p className="font-editorial text-xl">{kind === "rent" ? "Request these dates" : "Make an offer"}</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {kind === "rent" ? "Pick your dates and name your rate." : "Name your price. We'll take it from there."}
+            </p>
             <form onSubmit={startDeal} className="mt-4 space-y-3">
+              {kind === "rent" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs uppercase tracking-widest text-muted-foreground">From</label>
+                    <input className="input-field mt-1" type="date" value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="text-xs uppercase tracking-widest text-muted-foreground">To</label>
+                    <input className="input-field mt-1" type="date" value={endDate} min={startDate || undefined}
+                      onChange={(e) => setEndDate(e.target.value)} />
+                  </div>
+                </div>
+              )}
               <div>
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Your offer ({listing.currency})</label>
+                <label className="text-xs uppercase tracking-widest text-muted-foreground">
+                  {kind === "rent" ? `Your monthly offer (${listing.currency})` : `Your offer (${listing.currency})`}
+                </label>
                 <input className="input-field mt-1" type="number" min="0" step="1" placeholder="Optional"
                   value={offer} onChange={(e) => setOffer(e.target.value)} />
               </div>
