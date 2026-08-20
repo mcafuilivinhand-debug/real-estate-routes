@@ -48,9 +48,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ApexAnchor — Broker for property, vehicles & ventures" },
+      { title: "ApexAnchor — Property, vehicles & ventures for sale or rent" },
       { name: "description", content: "Buy, sell or rent homes, cars, land, office space, companies and business ideas — all in one marketplace." },
-      { property: "og:title", content: "ApexAnchor — Where buyers, sellers and renters meet. },
+      { property: "og:title", content: "ApexAnchor — Buy, sell or rent with confidence" },
       { property: "og:description", content: "Discover, compare and make offers in one place." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
