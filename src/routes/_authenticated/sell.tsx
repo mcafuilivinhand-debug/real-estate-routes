@@ -7,10 +7,10 @@ import { CATEGORIES, RENTABLE, SELLABLE, type Kind, type CategoryId } from "@/li
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({
     meta: [
-      { title: "Place a listing with the broker — ApexAnchor" },
-      { name: "description", content: "Hand your home, car, land, office, company or business idea to the ApexAnchor broker, who negotiates with buyers on your behalf." },
-      { property: "og:title", content: "Place a listing with the ApexAnchor broker" },
-      { property: "og:description", content: "The broker markets your asset and negotiates with buyers on your behalf." },
+      { title: "List an asset — ApexAnchor" },
+      { name: "description", content: "List your home, car, land, office, company or business idea on ApexAnchor and reach serious buyers and renters." },
+      { property: "og:title", content: "List an asset on ApexAnchor" },
+      { property: "og:description", content: "We market your asset and handle enquiries from buyers and renters." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -74,7 +74,7 @@ function SellPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-12">
-      <p className="text-xs uppercase tracking-[0.2em] text-primary">Place it with the broker</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-primary">List with ApexAnchor</p>
       <h1 className="font-editorial text-4xl mt-2">Tell us what you're offering</h1>
       <p className="text-muted-foreground mt-2">
         We review it, put it on the market, and handle every buyer and every price
@@ -139,7 +139,7 @@ function SellPage() {
 
         {err && <p className="text-sm text-destructive">{err}</p>}
         <button disabled={saving} className="btn-primary w-full disabled:opacity-60" type="submit">
-          {saving ? "Sending to the broker…" : "Send to the broker"}
+          {saving ? "Submitting…" : "Submit listing"}
         </button>
       </form>
     </div>

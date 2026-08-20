@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — ApexAnchor" },
-      { name: "description", content: "Your listings with the broker and every negotiation you have running." },
+      { name: "description", content: "Your listings and every enquiry you have running." },
       { property: "og:title", content: "Dashboard — ApexAnchor" },
-      { property: "og:description", content: "Your listings with the broker and every negotiation you have running." },
+      { property: "og:description", content: "Your listings and every enquiry you have running." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -53,7 +53,7 @@ function Dashboard() {
   });
 
   async function remove(id: string) {
-    if (!confirm("Withdraw this listing from the broker?")) return;
+    if (!confirm("Withdraw this listing?")) return;
     await supabase.from("listings").delete().eq("id", id);
     window.location.reload();
   }
@@ -72,9 +72,9 @@ function Dashboard() {
       </div>
 
       <section className="mt-10">
-        <h2 className="font-editorial text-2xl">Listings you've placed with {BROKER_NAME}</h2>
+        <h2 className="font-editorial text-2xl">Your listings on {BROKER_NAME}</h2>
         {!mine || mine.length === 0 ? (
-          <p className="text-muted-foreground mt-3">You haven't placed anything with the broker yet.</p>
+          <p className="text-muted-foreground mt-3">You haven't listed anything yet.</p>
         ) : (
           <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {mine.map((l) => (
@@ -99,9 +99,9 @@ function Dashboard() {
       </section>
 
       <section className="mt-14">
-        <h2 className="font-editorial text-2xl">Your negotiations with the broker</h2>
+        <h2 className="font-editorial text-2xl">Your enquiries</h2>
         {!deals || deals.length === 0 ? (
-          <p className="text-muted-foreground mt-3">No negotiations yet.</p>
+          <p className="text-muted-foreground mt-3">No enquiries yet.</p>
         ) : (
           <div className="mt-4 space-y-3">
             {deals.map((d) => {

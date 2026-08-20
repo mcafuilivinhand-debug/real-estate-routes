@@ -48,10 +48,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ApexAnchor — Broker for property, vehicles & ventures" },
-      { name: "description", content: "Buy, sell or rent homes, cars, land, office space, companies and business ideas — with ApexAnchor negotiating between both sides." },
-      { property: "og:title", content: "ApexAnchor — Your broker between buyers and sellers" },
-      { property: "og:description", content: "Every price is negotiated through ApexAnchor, the broker between buyer and seller." },
+      { title: "ApexAnchor — Property, vehicles & ventures for sale or rent" },
+      { name: "description", content: "Buy, sell or rent homes, cars, land, office space, companies and business ideas — all in one marketplace." },
+      { property: "og:title", content: "ApexAnchor — Buy, sell or rent with confidence" },
+      { property: "og:description", content: "Discover, compare and make offers in one place." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -108,22 +108,22 @@ function RootComponent() {
           <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
             <Link to="/" className="flex items-baseline gap-2">
               <span className="font-editorial text-2xl tracking-tight">ApexAnchor</span>
-              <span className="text-xs text-muted-foreground hidden sm:inline">— broker &amp; marketplace</span>
+              <span className="text-xs text-muted-foreground hidden sm:inline">— marketplace</span>
             </Link>
             <nav className="flex items-center gap-1 text-sm">
-              <Link to="/browse" search={{ kind: "sale" }} className="btn-ghost">Buy</Link>
-              <Link to="/browse" search={{ kind: "rent" }} className="btn-ghost">Rent</Link>
+              <Link to="/browse" search={{ kind: "sale" }} className="btn-ghost">Browse to buy</Link>
+              <Link to="/browse" search={{ kind: "rent" }} className="btn-ghost">Browse to rent</Link>
               {email ? (
                 <>
-                  <Link to="/deals" className="btn-ghost hidden sm:inline-flex">Negotiations</Link>
+                  <Link to="/deals" className="btn-ghost hidden sm:inline-flex">Enquiries</Link>
                   <Link to="/dashboard" className="btn-ghost hidden sm:inline-flex">Dashboard</Link>
-                  <Link to="/sell" className="btn-primary">Sell through us</Link>
+                  <Link to="/sell" className="btn-primary">List an asset</Link>
                   <button onClick={handleSignOut} className="btn-ghost text-muted-foreground">Sign out</button>
                 </>
               ) : (
                 <>
                   <Link to="/auth" className="btn-ghost">Sign in</Link>
-                  <Link to="/sell" className="btn-primary">Sell through us</Link>
+                  <Link to="/sell" className="btn-primary">List an asset</Link>
                 </>
               )}
             </nav>
@@ -133,7 +133,7 @@ function RootComponent() {
         <footer className="border-t border-border/60 mt-24">
           <div className="max-w-6xl mx-auto px-5 py-10 text-sm text-muted-foreground flex flex-col sm:flex-row gap-4 justify-between">
             <p className="font-editorial text-lg text-foreground">ApexAnchor</p>
-            <p>© {new Date().getFullYear()} ApexAnchor. Your broker between buyers and sellers.</p>
+            <p>© {new Date().getFullYear()} ApexAnchor. Where buyers, sellers and renters meet.</p>
           </div>
         </footer>
       </div>
