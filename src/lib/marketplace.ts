@@ -36,7 +36,7 @@ export function formatAmount(amount: number, currency: string) {
 }
 
 export const DEAL_STATUS_LABEL: Record<DealStatus, string> = {
-  open: "Awaiting broker",
+  open: "Awaiting reply",
   negotiating: "In negotiation",
   agreed: "Terms agreed",
   closed: "Closed",
@@ -44,7 +44,7 @@ export const DEAL_STATUS_LABEL: Record<DealStatus, string> = {
 };
 
 export const LISTING_STATUS_LABEL: Record<string, string> = {
-  pending: "Awaiting broker review",
+  pending: "Under review",
   active: "Live on the market",
   draft: "Draft",
   sold: "Sold",
