@@ -69,6 +69,11 @@ function ListingPage() {
       contact_phone: contactPhone,
     });
     if (!parsed.success) return setErr(parsed.error.issues[0].message);
+
+    const isRental = listing?.kind === "rent";
+    if (isRental && startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+      return setErr("The end date must come after the start date");
+    }
     setSending(true);
 
     const amount = typeof parsed.data.offer_amount === "number" ? parsed.data.offer_amount : null;
@@ -83,6 +88,8 @@ function ListingPage() {
         currency: listing?.currency ?? "USD",
         contact_email: parsed.data.contact_email || null,
         contact_phone: parsed.data.contact_phone || null,
+        start_date: isRental && startDate ? startDate : null,
+        end_date: isRental && endDate ? endDate : null,
       })
       .select("id")
       .single();
