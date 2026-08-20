@@ -196,7 +196,7 @@ function ListingPage() {
               <input className="input-field" placeholder="Phone (optional)" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} maxLength={40} />
               {err && <p className="text-sm text-destructive">{err}</p>}
               <button disabled={sending} className="btn-primary w-full disabled:opacity-60" type="submit">
-                {sending ? "Sending…" : session ? "Send offer" : "Sign in to make an offer"}
+                {sending ? "Sending…" : session ? (kind === "rent" ? "Send request" : "Send offer") : "Sign in to continue"}
               </button>
             </form>
           </div>

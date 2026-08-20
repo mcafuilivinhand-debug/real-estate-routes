@@ -25,7 +25,7 @@ function DealsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("deals")
-        .select("id, status, side, offer_amount, currency, created_at, listings(title, image_url)")
+        .select("id, status, side, offer_amount, currency, start_date, end_date, created_at, listings(title, image_url)")
         .eq("client_id", user.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;
