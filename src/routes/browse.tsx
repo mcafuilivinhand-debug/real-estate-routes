@@ -66,8 +66,8 @@ function BrowsePage() {
           </h1>
         </div>
         <div className="inline-flex rounded-md border border-border overflow-hidden text-sm">
-          <button className={`px-4 py-2 ${kind === "sale" ? "bg-foreground text-background" : ""}`} onClick={() => update({ kind: "sale", category: undefined })}>Buy</button>
-          <button className={`px-4 py-2 ${kind === "rent" ? "bg-foreground text-background" : ""}`} onClick={() => update({ kind: "rent", category: undefined })}>Rent</button>
+          <button className={`px-4 py-2 ${kind === "sale" ? "bg-foreground text-background" : ""}`} onClick={() => update({ kind: "sale", category: undefined })}>Browse to buy</button>
+          <button className={`px-4 py-2 ${kind === "rent" ? "bg-foreground text-background" : ""}`} onClick={() => update({ kind: "rent", category: undefined })}>Browse to rent</button>
         </div>
       </div>
 
