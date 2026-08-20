@@ -95,15 +95,15 @@ function Index() {
         </Link>
       </section>
 
-      {/* How brokering works */}
+      {/* How it works */}
       <section className="max-w-6xl mx-auto px-5 mt-24">
         <p className="text-xs uppercase tracking-[0.2em] text-primary">How it works</p>
-        <h2 className="font-editorial text-4xl mt-2">We stand in the middle</h2>
+        <h2 className="font-editorial text-4xl mt-2">Simple from start to finish</h2>
         <div className="mt-8 grid md:grid-cols-3 gap-px bg-border rounded-md overflow-hidden">
           {[
-            { n: "01", t: "Sellers hand it over", d: "Owners place a house, car, land, office or company with us. We review it before it ever goes on the market." },
-            { n: "02", t: "Buyers negotiate with us", d: "Interested? Make your offer to ApexAnchor. No cold calls to strangers, no exposed phone numbers." },
-            { n: "03", t: "We close the gap", d: "We carry offers and counter-offers between both sides until the price is agreed, then walk the deal to the finish." },
+            { n: "01", t: "Listings get reviewed", d: "Every house, car, land parcel, office and company is checked before it appears on the market." },
+            { n: "02", t: "You make an offer", d: "Found something? Send your price and questions privately — no cold calls, no exposed phone numbers." },
+            { n: "03", t: "The deal gets closed", d: "Offers and answers travel through one private thread until the price is agreed and the deal is done." },
           ].map((s) => (
             <div key={s.n} className="bg-background p-8">
               <p className="font-editorial text-3xl text-primary">{s.n}</p>
