@@ -54,7 +54,7 @@ function DealsPage() {
                 <div className="min-w-0 flex-1">
                   <p className="font-editorial text-lg line-clamp-1">{listing?.title ?? "Listing"}</p>
                   <p className="text-sm text-muted-foreground">
-                    {d.side === "buy" ? "You're buying" : "You're selling"}
+                    {d.side === "buying" ? "You're buying" : d.side === "renting" ? "You're renting" : "You're selling"}
                     {d.offer_amount ? ` · Your offer ${formatAmount(Number(d.offer_amount), d.currency)}` : ""}
                     {d.start_date && d.end_date
                       ? ` · ${new Date(d.start_date).toLocaleDateString()} → ${new Date(d.end_date).toLocaleDateString()}`

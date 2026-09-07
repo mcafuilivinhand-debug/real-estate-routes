@@ -82,8 +82,8 @@ function ListingPage() {
       .insert({
         listing_id: id,
         client_id: session.user.id,
-        side: "buy",
-        status: "open",
+        side: isRental ? "renting" : "buying",
+        status: "inquiry",
         offer_amount: amount,
         currency: listing?.currency ?? "USD",
         contact_email: parsed.data.contact_email || null,
