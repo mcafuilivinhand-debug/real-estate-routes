@@ -8,6 +8,7 @@ const searchSchema = z.object({
   kind: z.enum(["sale", "rent"]).default("sale"),
   category: z.enum(["car", "house", "land", "company", "business_idea", "office"]).optional(),
   q: z.string().optional(),
+  location: z.string().optional(),
   min: z.coerce.number().optional(),
   max: z.coerce.number().optional(),
 });
