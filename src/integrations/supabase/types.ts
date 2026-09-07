@@ -16,24 +16,30 @@ export type Database = {
     Tables: {
       deal_messages: {
         Row: {
+          body: string
           created_at: string
           deal_id: string
+          from_broker: boolean
           id: string
-          message: string
+          offer_amount: number | null
           sender_id: string
         }
         Insert: {
+          body: string
           created_at?: string
           deal_id: string
+          from_broker?: boolean
           id?: string
-          message: string
+          offer_amount?: number | null
           sender_id: string
         }
         Update: {
+          body?: string
           created_at?: string
           deal_id?: string
+          from_broker?: boolean
           id?: string
-          message?: string
+          offer_amount?: number | null
           sender_id?: string
         }
         Relationships: [
@@ -50,6 +56,8 @@ export type Database = {
         Row: {
           broker_id: string | null
           client_id: string
+          contact_email: string | null
+          contact_phone: string | null
           created_at: string
           currency: string
           end_date: string | null
@@ -65,6 +73,8 @@ export type Database = {
         Insert: {
           broker_id?: string | null
           client_id: string
+          contact_email?: string | null
+          contact_phone?: string | null
           created_at?: string
           currency?: string
           end_date?: string | null
@@ -80,6 +90,8 @@ export type Database = {
         Update: {
           broker_id?: string | null
           client_id?: string
+          contact_email?: string | null
+          contact_phone?: string | null
           created_at?: string
           currency?: string
           end_date?: string | null
