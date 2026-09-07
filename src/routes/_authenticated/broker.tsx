@@ -159,7 +159,7 @@ function BrokerDesk() {
                   <div className="min-w-0">
                     <p className="font-editorial text-lg line-clamp-1">{listing?.title ?? "Listing"}</p>
                     <p className="text-sm text-muted-foreground">
-                      {d.side === "buy" ? "Buyer" : "Seller"}
+                      {d.side === "buying" ? "Buyer" : d.side === "renting" ? "Renter" : "Seller"}
                       {d.offer_amount ? ` · Offer ${formatAmount(Number(d.offer_amount), d.currency)}` : ""}
                       {d.contact_email ? ` · ${d.contact_email}` : ""}
                     </p>

@@ -111,7 +111,7 @@ function Dashboard() {
                   <div>
                     <p className="font-editorial text-lg">{listing?.title ?? "Listing"}</p>
                     <p className="text-sm text-muted-foreground">
-                      {d.side === "buy" ? "You're buying" : "You're selling"}
+                      {d.side === "buying" ? "You're buying" : d.side === "renting" ? "You're renting" : "You're selling"}
                       {d.offer_amount ? ` · Your offer ${formatAmount(Number(d.offer_amount), d.currency)}` : ""}
                       {" · "}{new Date(d.created_at).toLocaleDateString()}
                     </p>

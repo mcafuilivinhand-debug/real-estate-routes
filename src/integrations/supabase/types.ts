@@ -54,6 +54,7 @@ export type Database = {
       }
       deals: {
         Row: {
+          broker_id: string | null
           client_id: string
           contact_email: string | null
           contact_phone: string | null
@@ -62,6 +63,7 @@ export type Database = {
           end_date: string | null
           id: string
           listing_id: string
+          notes: string | null
           offer_amount: number | null
           side: Database["public"]["Enums"]["deal_side"]
           start_date: string | null
@@ -69,6 +71,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          broker_id?: string | null
           client_id: string
           contact_email?: string | null
           contact_phone?: string | null
@@ -77,13 +80,15 @@ export type Database = {
           end_date?: string | null
           id?: string
           listing_id: string
+          notes?: string | null
           offer_amount?: number | null
-          side?: Database["public"]["Enums"]["deal_side"]
+          side: Database["public"]["Enums"]["deal_side"]
           start_date?: string | null
           status?: Database["public"]["Enums"]["deal_status"]
           updated_at?: string
         }
         Update: {
+          broker_id?: string | null
           client_id?: string
           contact_email?: string | null
           contact_phone?: string | null
@@ -92,6 +97,7 @@ export type Database = {
           end_date?: string | null
           id?: string
           listing_id?: string
+          notes?: string | null
           offer_amount?: number | null
           side?: Database["public"]["Enums"]["deal_side"]
           start_date?: string | null
@@ -259,8 +265,8 @@ export type Database = {
     }
     Enums: {
       app_role: "broker" | "user"
-      deal_side: "buy" | "sell"
-      deal_status: "open" | "negotiating" | "agreed" | "closed" | "declined"
+      deal_side: "buying" | "selling" | "renting" | "letting"
+      deal_status: "inquiry" | "negotiating" | "agreed" | "closed" | "cancelled"
       listing_category:
         | "car"
         | "house"
@@ -398,8 +404,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["broker", "user"],
-      deal_side: ["buy", "sell"],
-      deal_status: ["open", "negotiating", "agreed", "closed", "declined"],
+      deal_side: ["buying", "selling", "renting", "letting"],
+      deal_status: ["inquiry", "negotiating", "agreed", "closed", "cancelled"],
       listing_category: [
         "car",
         "house",

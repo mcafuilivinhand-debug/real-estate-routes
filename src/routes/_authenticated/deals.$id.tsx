@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/deals/$id")({
   component: DealThread,
 });
 
-const STATUSES: DealStatus[] = ["open", "negotiating", "agreed", "closed", "declined"];
+const STATUSES: DealStatus[] = ["inquiry", "negotiating", "agreed", "closed", "cancelled"];
 
 function DealThread() {
   const { id } = Route.useParams();
