@@ -90,6 +90,8 @@ function BrowsePage() {
       <div className="mt-4 grid sm:grid-cols-4 gap-3">
         <input className="input-field sm:col-span-2" placeholder="Search title…" defaultValue={q ?? ""}
           onChange={(e) => update({ q: e.target.value || undefined })} />
+        <input className="input-field sm:col-span-2" placeholder="Location" defaultValue={location ?? ""}
+          onChange={(e) => update({ location: e.target.value || undefined })} />
         <input className="input-field" type="number" placeholder="Min price" defaultValue={min ?? ""}
           onChange={(e) => update({ min: e.target.value ? Number(e.target.value) : undefined })} />
         <input className="input-field" type="number" placeholder="Max price" defaultValue={max ?? ""}
