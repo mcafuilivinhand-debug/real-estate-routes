@@ -8,6 +8,7 @@ const searchSchema = z.object({
   kind: z.enum(["sale", "rent"]).default("sale"),
   category: z.enum(["car", "house", "land", "company", "business_idea", "office"]).optional(),
   q: z.string().optional(),
+  location: z.string().optional(),
   min: z.coerce.number().optional(),
   max: z.coerce.number().optional(),
 });
@@ -27,12 +28,12 @@ export const Route = createFileRoute("/browse")({
 });
 
 function BrowsePage() {
-  const { kind, category, q, min, max } = Route.useSearch();
+  const { kind, category, q, location, min, max } = Route.useSearch();
   const navigate = Route.useNavigate();
   const validCategories = kind === "rent" ? RENTABLE : SELLABLE;
 
   const { data: listings, isLoading } = useQuery({
-    queryKey: ["listings", kind, category, q, min, max],
+    queryKey: ["listings", kind, category, q, location, min, max],
     queryFn: async () => {
       let query = supabase
         .from("listings")
@@ -43,6 +44,7 @@ function BrowsePage() {
         .limit(60);
       if (category) query = query.eq("category", category);
       if (q) query = query.ilike("title", `%${q}%`);
+      if (location) query = query.ilike("location", `%${location}%`);
       if (min != null) query = query.gte("price", min);
       if (max != null) query = query.lte("price", max);
       const { data, error } = await query;
@@ -51,7 +53,7 @@ function BrowsePage() {
     },
   });
 
-  function update(patch: Partial<{ kind: Kind; category?: CategoryId; q?: string; min?: number; max?: number }>) {
+  function update(patch: Partial<{ kind: Kind; category?: CategoryId; q?: string; location?: string; min?: number; max?: number }>) {
     navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }) as never, replace: true });
   }
 
@@ -88,6 +90,8 @@ function BrowsePage() {
       <div className="mt-4 grid sm:grid-cols-4 gap-3">
         <input className="input-field sm:col-span-2" placeholder="Search title…" defaultValue={q ?? ""}
           onChange={(e) => update({ q: e.target.value || undefined })} />
+        <input className="input-field sm:col-span-2" placeholder="Location" defaultValue={location ?? ""}
+          onChange={(e) => update({ location: e.target.value || undefined })} />
         <input className="input-field" type="number" placeholder="Min price" defaultValue={min ?? ""}
           onChange={(e) => update({ min: e.target.value ? Number(e.target.value) : undefined })} />
         <input className="input-field" type="number" placeholder="Max price" defaultValue={max ?? ""}
