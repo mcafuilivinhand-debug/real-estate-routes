@@ -52,11 +52,13 @@ export type Database = {
           client_id: string
           created_at: string
           currency: string
+          end_date: string | null
           id: string
           listing_id: string
           notes: string | null
           offer_amount: number | null
           side: Database["public"]["Enums"]["deal_side"]
+          start_date: string | null
           status: Database["public"]["Enums"]["deal_status"]
           updated_at: string
         }
@@ -65,11 +67,13 @@ export type Database = {
           client_id: string
           created_at?: string
           currency?: string
+          end_date?: string | null
           id?: string
           listing_id: string
           notes?: string | null
           offer_amount?: number | null
           side: Database["public"]["Enums"]["deal_side"]
+          start_date?: string | null
           status?: Database["public"]["Enums"]["deal_status"]
           updated_at?: string
         }
@@ -78,11 +82,13 @@ export type Database = {
           client_id?: string
           created_at?: string
           currency?: string
+          end_date?: string | null
           id?: string
           listing_id?: string
           notes?: string | null
           offer_amount?: number | null
           side?: Database["public"]["Enums"]["deal_side"]
+          start_date?: string | null
           status?: Database["public"]["Enums"]["deal_status"]
           updated_at?: string
         }
