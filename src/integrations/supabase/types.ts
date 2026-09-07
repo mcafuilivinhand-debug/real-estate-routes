@@ -14,6 +14,88 @@ export type Database = {
   }
   public: {
     Tables: {
+      deal_messages: {
+        Row: {
+          created_at: string
+          deal_id: string
+          id: string
+          message: string
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          id?: string
+          message: string
+          sender_id: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          id?: string
+          message?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_messages_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          broker_id: string | null
+          client_id: string
+          created_at: string
+          currency: string
+          id: string
+          listing_id: string
+          notes: string | null
+          offer_amount: number | null
+          side: Database["public"]["Enums"]["deal_side"]
+          status: Database["public"]["Enums"]["deal_status"]
+          updated_at: string
+        }
+        Insert: {
+          broker_id?: string | null
+          client_id: string
+          created_at?: string
+          currency?: string
+          id?: string
+          listing_id: string
+          notes?: string | null
+          offer_amount?: number | null
+          side: Database["public"]["Enums"]["deal_side"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          updated_at?: string
+        }
+        Update: {
+          broker_id?: string | null
+          client_id?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          listing_id?: string
+          notes?: string | null
+          offer_amount?: number | null
+          side?: Database["public"]["Enums"]["deal_side"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inquiries: {
         Row: {
           contact_email: string | null
@@ -163,6 +245,8 @@ export type Database = {
     }
     Enums: {
       app_role: "broker" | "user"
+      deal_side: "buying" | "selling" | "renting" | "letting"
+      deal_status: "inquiry" | "negotiating" | "agreed" | "closed" | "cancelled"
       listing_category:
         | "car"
         | "house"
@@ -300,6 +384,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["broker", "user"],
+      deal_side: ["buying", "selling", "renting", "letting"],
+      deal_status: ["inquiry", "negotiating", "agreed", "closed", "cancelled"],
       listing_category: [
         "car",
         "house",
