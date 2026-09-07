@@ -9,8 +9,8 @@ export const CATEGORIES = [
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
 export type Kind = "sale" | "rent";
-export type DealStatus = "open" | "negotiating" | "agreed" | "closed" | "declined";
-export type DealSide = "buy" | "sell";
+export type DealStatus = "inquiry" | "negotiating" | "agreed" | "closed" | "cancelled";
+export type DealSide = "buying" | "selling" | "renting" | "letting";
 
 export const BROKER_NAME = "ApexAnchor";
 
@@ -36,11 +36,11 @@ export function formatAmount(amount: number, currency: string) {
 }
 
 export const DEAL_STATUS_LABEL: Record<DealStatus, string> = {
-  open: "Awaiting reply",
+  inquiry: "Awaiting reply",
   negotiating: "In negotiation",
   agreed: "Terms agreed",
   closed: "Closed",
-  declined: "Declined",
+  cancelled: "Declined",
 };
 
 export const LISTING_STATUS_LABEL: Record<string, string> = {
