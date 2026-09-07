@@ -28,12 +28,12 @@ export const Route = createFileRoute("/browse")({
 });
 
 function BrowsePage() {
-  const { kind, category, q, min, max } = Route.useSearch();
+  const { kind, category, q, location, min, max } = Route.useSearch();
   const navigate = Route.useNavigate();
   const validCategories = kind === "rent" ? RENTABLE : SELLABLE;
 
   const { data: listings, isLoading } = useQuery({
-    queryKey: ["listings", kind, category, q, min, max],
+    queryKey: ["listings", kind, category, q, location, min, max],
     queryFn: async () => {
       let query = supabase
         .from("listings")
@@ -44,6 +44,7 @@ function BrowsePage() {
         .limit(60);
       if (category) query = query.eq("category", category);
       if (q) query = query.ilike("title", `%${q}%`);
+      if (location) query = query.ilike("location", `%${location}%`);
       if (min != null) query = query.gte("price", min);
       if (max != null) query = query.lte("price", max);
       const { data, error } = await query;
@@ -52,7 +53,7 @@ function BrowsePage() {
     },
   });
 
-  function update(patch: Partial<{ kind: Kind; category?: CategoryId; q?: string; min?: number; max?: number }>) {
+  function update(patch: Partial<{ kind: Kind; category?: CategoryId; q?: string; location?: string; min?: number; max?: number }>) {
     navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }) as never, replace: true });
   }
 
