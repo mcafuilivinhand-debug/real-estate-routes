@@ -1,53 +1,45 @@
 name: Deploy ApexAnchor to GitHub Pages
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
-
       - name: Install dependencies
         run: npm install
-
-      - name: Build static site
+      - name: TypeScript checks
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build
-
-      - name: Prepare GitHub Pages files
+      - name: Prepare SPA fallback
         run: |
           test -f .output/public/_shell.html
           cp .output/public/_shell.html .output/public/index.html
           cp .output/public/_shell.html .output/public/404.html
           touch .output/public/.nojekyll
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: .output/public
-
   deploy:
     environment:
       name: github-pages
