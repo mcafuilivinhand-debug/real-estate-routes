@@ -1,12 +1,9 @@
-// Lovable's config wrapper provides the TanStack Start, React, Tailwind and path plugins.
-// SPA mode lets this application be deployed to a static host such as GitHub Pages.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 
 export default defineConfig({
-  tanstackStart: {
-    spa: {
-      enabled: true,
-    },
-    server: { entry: "server" },
-  },
+  base: '/real-estate-routes/',
+  plugins: [tanstackStart({ spa: { enabled: true } }), tanstackRouter({ target: 'react', autoCodeSplitting: true }), react()],
 });
