@@ -3,43 +3,65 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
+
       - name: Install dependencies
         run: npm install
+
       - name: TypeScript checks
         run: npm run typecheck
+
       - name: Lint
         run: npm run lint
+
       - name: Build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build
+
       - name: Prepare SPA fallback
+        shell: bash
         run: |
-          test -f .output/public/_shell.html
-          cp .output/public/_shell.html .output/public/index.html
-          cp .output/public/_shell.html .output/public/404.html
-          touch .output/public/.nojekyll
+          set -euo pipefail
+          SHELL_FILE="$(find . -type f -name '_shell.html' -not -path './node_modules/*' | head -n 1)"
+          if [ -z "$SHELL_FILE" ]; then
+            echo "TanStack Start shell file was not generated."
+            echo "Generated HTML files:"
+            find . -type f \( -name '*.html' -o -name '_shell.html' \) -not -path './node_modules/*' | sort | head -n 100
+            exit 1
+          fi
+          PUBLIC_DIR="$(dirname "$SHELL_FILE")"
+          cp "$SHELL_FILE" "$PUBLIC_DIR/index.html"
+          cp "$SHELL_FILE" "$PUBLIC_DIR/404.html"
+          touch "$PUBLIC_DIR/.nojekyll"
+          echo "GitHub Pages artifact directory: $PUBLIC_DIR"
+
       - uses: actions/configure-pages@v5
+
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: .output/public
+          path: ${{ github.workspace }}/$(dirname "$(find . -type f -name '_shell.html' -not -path './node_modules/*' | head -n 1)")
+
   deploy:
     environment:
       name: github-pages
