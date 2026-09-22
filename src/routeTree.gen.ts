@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ListingsIdRouteImport } from './routes/listings.$id'
+import { Route as BrokerAddressRouteImport } from './routes/broker.$address'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedBrokerRouteImport } from './routes/_authenticated/broker'
@@ -48,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
 const ListingsIdRoute = ListingsIdRouteImport.update({
   id: '/listings/$id',
   path: '/listings/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrokerAddressRoute = BrokerAddressRouteImport.update({
+  id: '/broker/$address',
+  path: '/broker/$address',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedSellRoute = AuthenticatedSellRouteImport.update({
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/broker/$address': typeof BrokerAddressRoute
   '/deals/$id': typeof AuthenticatedDealsIdRoute
   '/deals/': typeof AuthenticatedDealsIndexRoute
 }
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/broker/$address': typeof BrokerAddressRoute
   '/deals/$id': typeof AuthenticatedDealsIdRoute
   '/deals': typeof AuthenticatedDealsIndexRoute
 }
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/listings/$id': typeof ListingsIdRoute
+  '/broker/$address': typeof BrokerAddressRoute
   '/_authenticated/deals/$id': typeof AuthenticatedDealsIdRoute
   '/_authenticated/deals/': typeof AuthenticatedDealsIndexRoute
 }
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/broker/$address'
     | '/deals/$id'
     | '/deals/'
   fileRoutesByTo: FileRoutesByTo
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/sell'
     | '/listings/$id'
+    | '/broker/$address'
     | '/deals/$id'
     | '/deals'
   id:
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/sell'
     | '/listings/$id'
+    | '/broker/$address'
     | '/_authenticated/deals/$id'
     | '/_authenticated/deals/'
   fileRoutesById: FileRoutesById
@@ -161,6 +173,7 @@ export interface RootRouteChildren {
   BrowseRoute: typeof BrowseRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ListingsIdRoute: typeof ListingsIdRoute
+  BrokerAddressRoute: typeof BrokerAddressRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       path: '/listings/$id'
       fullPath: '/listings/$id'
       preLoaderRoute: typeof ListingsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/broker/$address': {
+      id: '/broker/$address'
+      path: '/broker/$address'
+      fullPath: '/broker/$address'
+      preLoaderRoute: typeof BrokerAddressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/sell': {
@@ -271,6 +291,7 @@ const rootRouteChildren: RootRouteChildren = {
   BrowseRoute: BrowseRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ListingsIdRoute: ListingsIdRoute,
+  BrokerAddressRoute: BrokerAddressRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
