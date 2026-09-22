@@ -40,6 +40,7 @@ jobs:
         run: npm run build
 
       - name: Prepare SPA fallback
+        id: prepare
         shell: bash
         run: |
           set -euo pipefail
@@ -54,13 +55,14 @@ jobs:
           cp "$SHELL_FILE" "$PUBLIC_DIR/index.html"
           cp "$SHELL_FILE" "$PUBLIC_DIR/404.html"
           touch "$PUBLIC_DIR/.nojekyll"
+          echo "public_dir=$PUBLIC_DIR" >> "$GITHUB_OUTPUT"
           echo "GitHub Pages artifact directory: $PUBLIC_DIR"
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ github.workspace }}/$(dirname "$(find . -type f -name '_shell.html' -not -path './node_modules/*' | head -n 1)")
+          path: ${{ steps.prepare.outputs.public_dir }}
 
   deploy:
     environment:
