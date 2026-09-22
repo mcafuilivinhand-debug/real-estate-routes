@@ -1,18 +1,148 @@
-@import "tailwindcss" source(none);
-@source "../src";
+@import "tailwindcss";
 @import "tw-animate-css";
+@source "../src";
 @custom-variant dark (&:is(.dark *));
-@theme inline {--radius-sm:calc(var(--radius) - 4px);--radius-md:calc(var(--radius) - 2px);--radius-lg:var(--radius);--radius-xl:calc(var(--radius) + 4px);--color-background:var(--background);--color-foreground:var(--foreground);--color-card:var(--card);--color-primary:var(--primary);--color-primary-foreground:var(--primary-foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-accent:var(--accent);--color-destructive:var(--destructive);--color-border:var(--border);--font-serif:"Cormorant Garamond","Cormorant",Georgia,serif;--font-sans:"Inter",system-ui,sans-serif}
-:root{--radius:.375rem;--background:oklch(.972 .014 82);--foreground:oklch(.19 .015 60);--card:oklch(.987 .01 85);--primary:oklch(.55 .155 42);--primary-foreground:oklch(.98 .01 85);--muted:oklch(.94 .015 78);--muted-foreground:oklch(.45 .02 60);--accent:oklch(.82 .075 74);--destructive:oklch(.52 .19 25);--border:oklch(.87 .02 75)}
-@layer base{*{border-color:var(--color-border)}html{font-family:var(--font-sans)}body{background:var(--color-background);color:var(--color-foreground);-webkit-font-smoothing:antialiased}h1,h2,h3,h4,.font-editorial{font-family:var(--font-serif);font-weight:500;letter-spacing:-.01em}button,a,input,textarea,select{outline-offset:2px}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--color-primary)}}
-@utility eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;color:var(--color-primary)}
-@utility field-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--color-muted-foreground)}
-@utility segmented{display:inline-flex;border:1px solid var(--color-border);border-radius:var(--radius);overflow:hidden;font-size:.875rem}
-@utility segmented-button{padding:.5rem .9rem}
-@utility active{background:var(--color-foreground);color:var(--color-background)}
-@utility rule{height:1px;background:color-mix(in oklab,var(--foreground) 15%,transparent)}
-@utility btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:var(--radius);background:var(--color-primary);color:var(--color-primary-foreground);font-weight:500;transition:all .2s ease;&:hover{background:color-mix(in oklab,var(--color-primary) 88%,black);transform:translateY(-1px)}}
-@utility btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:var(--radius);border:1px solid var(--color-foreground);color:var(--color-foreground);font-weight:500;transition:all .15s ease;&:hover{background:var(--color-foreground);color:var(--color-background)}}
-@utility btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.55rem 1rem;border-radius:var(--radius);color:var(--color-foreground);transition:all .15s ease;&:hover{background:color-mix(in oklab,var(--color-foreground) 6%,transparent)}}
-@utility input-field{width:100%;padding:.65rem .9rem;border-radius:var(--radius);border:1px solid var(--color-border);background:var(--color-card);color:var(--color-foreground);font-size:.95rem;&:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in oklab,var(--color-primary) 20%,transparent)}}
-@utility card-warm{background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius)}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --radius: .375rem;
+  --background: oklch(.972 .014 82);
+  --foreground: oklch(.19 .015 60);
+  --card: oklch(.987 .01 85);
+  --primary: oklch(.55 .155 42);
+  --primary-foreground: oklch(.98 .01 85);
+  --muted: oklch(.94 .015 78);
+  --muted-foreground: oklch(.45 .02 60);
+  --accent: oklch(.82 .075 74);
+  --destructive: oklch(.52 .19 25);
+  --border: oklch(.87 .02 75);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { font-family: var(--font-sans); }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, .font-editorial {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -.01em;
+  }
+  button, a, input, textarea, select { outline-offset: 2px; }
+  button:focus-visible, a:focus-visible, input:focus-visible,
+  textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--color-primary);
+  }
+}
+
+@utility eyebrow {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--color-primary);
+}
+@utility field-label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--color-muted-foreground);
+}
+@utility segmented {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: .875rem;
+}
+@utility segmented-button { padding: .5rem .9rem; }
+@utility active {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+@utility rule {
+  height: 1px;
+  background: color-mix(in oklab, var(--foreground) 15%, transparent);
+}
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .7rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight: 500;
+  transition: all .2s ease;
+  &:hover {
+    background: color-mix(in oklab, var(--color-primary) 88%, black);
+    transform: translateY(-1px);
+  }
+}
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .7rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-foreground);
+  color: var(--color-foreground);
+  font-weight: 500;
+  transition: all .15s ease;
+  &:hover {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+}
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .55rem 1rem;
+  border-radius: var(--radius);
+  color: var(--color-foreground);
+  transition: all .15s ease;
+  &:hover { background: color-mix(in oklab, var(--color-foreground) 6%, transparent); }
+}
+@utility input-field {
+  width: 100%;
+  padding: .65rem .9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font-size: .95rem;
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary) 20%, transparent);
+  }
+}
+@utility card-warm {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
