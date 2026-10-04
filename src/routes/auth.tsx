@@ -16,6 +16,10 @@ function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [resetMode, setResetMode] = useState(false);
+  const [resetPassword, setResetPassword] = useState('');
+  const [resetConfirmation, setResetConfirmation] = useState('');
+  const [resetEmailSent, setResetEmailSent] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -26,8 +30,10 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const recovery = new URLSearchParams(window.location.search).get('reset') === '1';
+    if (recovery) setResetMode(true);
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: '/dashboard', replace: true });
+      if (data.session && !recovery) navigate({ to: '/dashboard', replace: true });
     });
   }, [navigate]);
 
@@ -142,6 +148,42 @@ function AuthPage() {
     }
   }
 
+  async function requestPasswordReset(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    const parsed = z.string().trim().email('Enter a valid email').safeParse(email);
+    if (!parsed.success) { setError(parsed.error.issues[0].message); return; }
+    setLoading(true);
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(parsed.data, {
+        redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth?reset=1`,
+      });
+      if (resetError) throw resetError;
+      setResetEmailSent(true);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Unable to send the reset email.');
+    } finally { setLoading(false); }
+  }
+
+  async function saveNewPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (resetPassword.length < 8) { setError('Use at least 8 characters.'); return; }
+    if (resetPassword !== resetConfirmation) { setError('The passwords do not match.'); return; }
+    setLoading(true);
+    try {
+      const { error: updateError } = await supabase.auth.updateUser({ password: resetPassword });
+      if (updateError) throw updateError;
+      setResetMode(false);
+      setPassword('');
+      setResetPassword('');
+      setResetConfirmation('');
+      navigate({ to: '/dashboard', replace: true });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Unable to update the password.');
+    } finally { setLoading(false); }
+  }
+
   async function google() {
     setError(null);
     const { error } = await supabase.auth.signInWithOAuth({
@@ -151,6 +193,18 @@ function AuthPage() {
       },
     });
     if (error) setError('Google sign-in is not enabled for this Supabase project yet.');
+  }
+
+  if (resetMode) {
+    return <div className="min-h-[80vh] flex items-center justify-center px-5 py-16"><div className="w-full max-w-md"><p className="eyebrow text-center">ApexAnchor security</p><h1 className="font-editorial text-4xl text-center mt-2">Choose a new password</h1><div className="card-warm p-6 mt-8"><form onSubmit={saveNewPassword} className="space-y-4"><div><label className="field-label">New password</label><input type="password" minLength={8} required className="input-field mt-1" value={resetPassword} onChange={e=>setResetPassword(e.target.value)} autoComplete="new-password"/></div><div><label className="field-label">Confirm new password</label><input type="password" minLength={8} required className="input-field mt-1" value={resetConfirmation} onChange={e=>setResetConfirmation(e.target.value)} autoComplete="new-password"/></div>{error&&<p className="text-sm text-destructive">{error}</p>}<button disabled={loading} className="btn-primary w-full">{loading?'Saving…':'Update password'}</button></form></div></div></div>;
+  }
+
+  if (resetEmailSent) {
+    return <div className="min-h-[80vh] flex items-center justify-center px-5 py-16"><div className="w-full max-w-md text-center"><p className="eyebrow">ApexAnchor security</p><h1 className="font-editorial text-4xl mt-2">Check your email</h1><p className="text-muted-foreground mt-3">If an account exists for {email}, we have sent a password reset link.</p><button className="btn-outline mt-6" onClick={()=>{setResetEmailSent(false);setMode('signin');setError(null)}}>Back to sign in</button></div></div>;
+  }
+
+  if (mode === 'reset-request') {
+    return <div className="min-h-[80vh] flex items-center justify-center px-5 py-16"><div className="w-full max-w-md"><p className="eyebrow text-center">ApexAnchor security</p><h1 className="font-editorial text-4xl text-center mt-2">Reset your password</h1><p className="text-center text-muted-foreground mt-2">We will email you a secure reset link.</p><div className="card-warm p-6 mt-8"><form onSubmit={requestPasswordReset} className="space-y-4"><div><label className="field-label">Account email</label><input type="email" required className="input-field mt-1" value={email} onChange={e=>setEmail(e.target.value)}/></div>{error&&<p className="text-sm text-destructive">{error}</p>}<button disabled={loading} className="btn-primary w-full">{loading?'Sending…':'Send reset link'}</button></form><button className="block mx-auto mt-5 text-sm underline" onClick={()=>{setMode('signin');setError(null)}}>Back to sign in</button></div></div></div>;
   }
 
   if (verificationPending) {
@@ -284,6 +338,7 @@ function AuthPage() {
             </button>
           </form>
 
+          {mode === 'signin' && <button type="button" className="block ml-auto mt-3 text-sm underline text-muted-foreground" onClick={()=>{setMode('reset-request');setError(null);setResetEmailSent(false)}}>Forgot password?</button>}
           <p className="text-sm text-center mt-5 text-muted-foreground">
             {mode === 'signin' ? 'New here?' : 'Already have an account?'}{' '}
             <button
