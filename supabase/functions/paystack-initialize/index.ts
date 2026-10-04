@@ -47,6 +47,9 @@ Deno.serve(async (req) => {
       return json({ error: "The agreed amount must have no more than two decimal places" }, 409);
     }
 
+    const { data: paidAlready } = await admin.from("payments").select("reference").eq("deal_id", deal.id).eq("status", "success").limit(1).maybeSingle();
+    if (paidAlready) return json({ error: "This deal has already been paid." }, 409);
+
     const reference = `AA-${deal.id.slice(0, 8)}-${crypto.randomUUID().replaceAll("-", "")}`;
     const { error: insertError } = await admin.from("payments").insert({
       deal_id: deal.id, buyer_id: user.id, reference, amount, currency, status: "pending",
