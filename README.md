@@ -61,7 +61,9 @@ The workflow runs TypeScript, lint and a production build before deploying the S
 - Clients cannot insert broker messages.
 - Client-side deal status changes are blocked by a database trigger.
 - Seller contact details are not included in public listing queries.
-- Seller submissions transactionally create a pending listing, private sell deal and first message.
+- Customer asset requests are routed to the sole broker by email or WhatsApp; customers cannot create listings.
+- Only the manually assigned broker can insert, publish, edit, reject, archive or sell listings.
+- Broker notifications use the customer-selected email or WhatsApp channel; the broker reviews requests and enters approved listings in the private desk.
 - Buyer enquiries transactionally create the private buy deal and first message.
 
 ## Routes
