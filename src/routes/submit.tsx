@@ -3,7 +3,7 @@ import { useState, type FormEvent } from 'react';
 import { CountryCombobox } from '@/components/CountryCombobox';
 import { CATEGORIES, type Kind } from '@/lib/marketplace';
 
-export const Route = createFileRoute('/submit')({ component: SubmitAssetPage });
+export const Route = createFileRoute('/submit' as never)({ component: SubmitAssetPage });
 
 const BROKER_EMAIL = 'mcafuilivinhand@gmail.com';
 const WHATSAPP_NUMBER = '233557873406';
