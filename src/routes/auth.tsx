@@ -15,7 +15,7 @@ const otpSchema = z.string().trim().regex(/^\d{6}$/, 'Enter the 6-digit code.');
 function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset-request'>('signin');
   const [resetMode, setResetMode] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
   const [resetConfirmation, setResetConfirmation] = useState('');
