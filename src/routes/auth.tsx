@@ -62,6 +62,9 @@ function AuthPage() {
           password: parsed.data.password,
           options: {
             data: { display_name: name.trim() },
+            // Ensure confirmation links return to the deployed app, not Supabase's
+            // default localhost URL. BASE_URL includes the GitHub Pages repo path.
+            emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL}dashboard`,
           },
         });
 
