@@ -73,3 +73,13 @@ Public: `/`, `/browse`, `/listings/:id`, `/auth`, `/broker/apexanchor`, `/sitema
 Protected: `/sell`, `/dashboard`, `/deals`, `/deals/:id`, `/broker`
 
 Unknown broker addresses show `Broker address not found` and link back home.
+
+
+## Broker access and password recovery
+
+- The private Broker Workspace is visually separated from the public marketplace.
+- An authorised broker can grant or revoke broker access for an email that already has an ApexAnchor account. Granting access does not create a user account; invitees must register first.
+- Broker access is managed by security-definer database RPCs. The browser cannot directly write to `user_roles`.
+- Apply `20261004130000_broker_access_management.sql` in the Supabase SQL Editor after the earlier broker-managed listing migration.
+- Password recovery uses Supabase Auth email reset links. Add this exact URL to **Authentication → URL Configuration → Redirect URLs**:
+  `https://mcafuilivinhand-debug.github.io/real-estate-routes/auth?reset=1`
