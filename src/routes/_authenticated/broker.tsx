@@ -14,7 +14,8 @@ function BrokerListingForm({userId,onCreated}:{userId:string;onCreated:()=>void}
  const [error,setError]=useState<string|null>(null);
  async function createListing(e:FormEvent<HTMLFormElement>){
   e.preventDefault();setError(null);
-  const form=new FormData(e.currentTarget);
+  const formElement=e.currentTarget;
+  const form=new FormData(formElement);
   const title=String(form.get('title')??'').trim();
   const price=Number(form.get('price'));
   if(!country){setError('Choose the asset country.');return;}
@@ -23,7 +24,7 @@ function BrokerListingForm({userId,onCreated}:{userId:string;onCreated:()=>void}
   const {error:insertError}=await supabase.from('listings').insert({owner_id:userId,kind,category:String(form.get('category')) as CategoryId,title,description:String(form.get('description')??''),price,currency:String(form.get('currency')||'GHS').toUpperCase(),location:country,image_url:String(form.get('image_url')??'').trim()||null,status:'pending'});
   setSaving(false);
   if(insertError){setError(insertError.message);return;}
-  e.currentTarget.reset();setCountry('');onCreated();
+  formElement.reset();setCountry('');onCreated();
  }
  return <section className="card-warm p-6 mt-8"><p className="eyebrow">Broker-only action</p><h2 className="font-editorial text-2xl mt-1">Create an approved asset listing</h2><p className="text-sm text-muted-foreground mt-2">Enter details after reviewing a customer request. The listing remains pending until you publish it.</p><form onSubmit={createListing} className="grid sm:grid-cols-2 gap-4 mt-5"><div><label className="field-label">Sale or rent</label><select className="input-field mt-1" value={kind} onChange={e=>setKind(e.target.value as 'sale'|'rent')}><option value="sale">For sale</option><option value="rent">For rent</option></select></div><div><label className="field-label">Category</label><select name="category" className="input-field mt-1">{CATEGORIES.map(x=><option key={x.id} value={x.id}>{x.label}</option>)}</select></div><div className="sm:col-span-2"><label className="field-label">Listing title</label><input name="title" required minLength={4} maxLength={120} className="input-field mt-1"/></div><div><label className="field-label">Price</label><input name="price" type="number" min="0" step="0.01" required className="input-field mt-1"/></div><div><label className="field-label">Currency</label><input name="currency" defaultValue="GHS" maxLength={4} className="input-field mt-1"/></div><div className="sm:col-span-2"><label className="field-label">Country</label><CountryCombobox value={country} onChange={setCountry}/></div><div className="sm:col-span-2"><label className="field-label">Description</label><textarea name="description" maxLength={4000} className="input-field mt-1 min-h-24"/></div><div className="sm:col-span-2"><label className="field-label">Image URL (optional)</label><input name="image_url" type="url" className="input-field mt-1"/></div>{error&&<p className="sm:col-span-2 text-sm text-destructive">{error}</p>}<button disabled={saving} className="btn-primary sm:col-span-2">{saving?'Saving…':'Create pending listing'}</button></form></section>;
 }
