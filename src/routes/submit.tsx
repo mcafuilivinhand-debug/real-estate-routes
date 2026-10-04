@@ -101,7 +101,7 @@ function SubmitAssetPage() {
       ...(photoLinks.length ? ['', 'Asset photos:', ...photoLinks] : []),
       '',
       'Please contact me about listing this asset with ApexAnchor.',
-    ].join('\\n');
+    ].join('\n');
     setEmailLink(`mailto:${BROKER_EMAIL}?subject=${encodeURIComponent('ApexAnchor asset request — ' + asset)}&body=${encodeURIComponent(message)}`);
     setWhatsappLink(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`);
     setSubmitted(true);
