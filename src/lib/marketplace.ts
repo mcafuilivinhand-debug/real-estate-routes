@@ -17,5 +17,9 @@ export const SELLABLE: CategoryId[] = ['house', 'car', 'land', 'office', 'compan
 export const DEAL_STATUS_LABEL: Record<DealStatus, string> = { open: 'Awaiting reply', negotiating: 'In negotiation', agreed: 'Terms agreed', closed: 'Closed', declined: 'Declined' };
 export const LISTING_STATUS_LABEL: Record<string, string> = { pending: 'Under review', active: 'Live on the market', draft: 'Draft', sold: 'Sold', archived: 'Archived' };
 export function categoryLabel(id: string) { return CATEGORIES.find(c => c.id === id)?.label ?? id; }
-export function formatPrice(price: number, currency: string, kind: Kind) { const f = new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 0 }).format(price); return kind === 'rent' ? `${f} / mo` : f; }
-export function formatAmount(amount: number, currency: string) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 0 }).format(amount); }
+export function normalizeCurrencyCode(currency: unknown): string {
+  const code = typeof currency === 'string' ? currency.trim().toUpperCase() : '';
+  return /^[A-Z]{3}$/.test(code) ? code : 'GHS';
+}
+export function formatPrice(price: number, currency: string, kind: Kind) { const f = new Intl.NumberFormat('en-US', { style: 'currency', currency: normalizeCurrencyCode(currency), maximumFractionDigits: 0 }).format(price); return kind === 'rent' ? `${f} / mo` : f; }
+export function formatAmount(amount: number, currency: string) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: normalizeCurrencyCode(currency), maximumFractionDigits: 0 }).format(amount); }
