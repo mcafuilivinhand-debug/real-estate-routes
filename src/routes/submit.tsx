@@ -65,7 +65,11 @@ function SubmitAssetPage() {
       return;
     }
 
-    const { data: request, error: requestError } = await supabase.from('asset_requests').insert({
+    // Generate the reference in the browser so a public seller can insert without
+    // requesting a returned row (asset_requests SELECT is intentionally broker-only).
+    const requestId = crypto.randomUUID();
+    const { error: requestError } = await supabase.from('asset_requests').insert({
+      id: requestId,
       owner_name: name,
       owner_phone: phone,
       kind,
@@ -75,17 +79,17 @@ function SubmitAssetPage() {
       expected_price: price,
       details,
       photo_urls: photoLinks,
-    }).select('id').single();
+    });
 
-    if (requestError || !request) {
-      setError(requestError?.message ?? 'Your request could not be saved. Please try again.');
+    if (requestError) {
+      setError(requestError.message ?? 'Your request could not be saved. Please try again.');
       setUploading(false);
       return;
     }
 
     const message = [
       'APEXANCHOR — NEW ASSET REQUEST',
-      `Request reference: ${request.id}`,
+      `Request reference: ${requestId}`,
       '',
       `Owner name: ${name}`,
       `Owner phone / WhatsApp: ${phone}`,
