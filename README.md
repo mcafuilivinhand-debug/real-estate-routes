@@ -83,3 +83,23 @@ Unknown broker addresses show `Broker address not found` and link back home.
 - Apply `20261004130000_broker_access_management.sql` in the Supabase SQL Editor after the earlier broker-managed listing migration.
 - Password recovery uses Supabase Auth email reset links. Add this exact URL to **Authentication → URL Configuration → Redirect URLs**:
   `https://mcafuilivinhand-debug.github.io/real-estate-routes/auth?reset=1`
+
+
+## Paystack payments
+
+Payments are initiated only for buyer-side deals that the broker has marked **agreed** and assigned a positive final agreed amount. The buyer pays the full amount in the deal currency. The browser never receives the Paystack secret key.
+
+1. Apply `supabase/migrations/20261004150000_paystack_payments.sql` in the production Supabase SQL Editor.
+2. Deploy the Edge Functions from the repository root:
+   ```sh
+   supabase login
+   supabase link --project-ref lnkinqgzeftvhzluqiln
+   supabase functions deploy paystack-initialize
+   supabase functions deploy paystack-webhook
+   ```
+3. In Supabase **Project Settings → Edge Functions → Secrets**, set `PAYSTACK_SECRET_KEY` to the Paystack test secret key. The Supabase runtime provides `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions.
+4. In Paystack **Settings → API Keys & Webhooks**, add webhook URL:
+   `https://lnkinqgzeftvhzluqiln.supabase.co/functions/v1/paystack-webhook`
+5. Keep Paystack in test mode until end-to-end checkout and signed webhook verification pass. Then replace the test secret with the live secret and test a small live payment.
+
+For GHS deals the hosted checkout requests card and Mobile Money channels; other deal currencies request card only. The merchant account must have the corresponding currency and channels enabled. Payment records are updated only by the signed webhook after Paystack's transaction verification endpoint confirms the exact amount, currency, reference and successful status.
