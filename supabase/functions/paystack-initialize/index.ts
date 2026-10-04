@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
     const amount = Number(deal.offer_amount);
     if (!Number.isFinite(amount) || amount <= 0) return json({ error: "The broker must set a valid agreed amount first" }, 409);
     const currency = String(deal.currency || "").trim().toUpperCase();
-    if (!/^[A-Z]{3}$/.test(currency)) return json({ error: "The deal has an invalid currency" }, 409);
+    if (currency !== "GHS") return json({ error: "ApexAnchor Paystack checkout currently accepts GHS only for Ghana. Ask the broker to confirm the final amount in Ghana cedis before payment." }, 409);
     const amountMinor = Math.round(amount * 100);
     if (!Number.isSafeInteger(amountMinor) || amountMinor <= 0 || Math.abs(amountMinor / 100 - amount) > 0.000001) {
       return json({ error: "The agreed amount must have no more than two decimal places" }, 409);
@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
     });
     if (insertError) return json({ error: "Could not create payment record" }, 500);
 
-    const channels = currency === "GHS" ? ["card", "mobile_money"] : ["card"];
+    const channels = ["card", "mobile_money"];
     const callbackUrl = Deno.env.get("APEXANCHOR_SITE_URL") || "https://mcafuilivinhand-debug.github.io/real-estate-routes";
     const response = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
