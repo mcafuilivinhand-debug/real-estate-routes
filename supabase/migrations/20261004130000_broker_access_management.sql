@@ -2,6 +2,27 @@
 -- Broker access remains controlled by the database; ordinary users cannot edit user_roles.
 drop index if exists public.one_broker_role;
 
+create or replace function public.is_primary_broker()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $
+  select exists (
+    select 1 from public.user_roles mine
+    where mine.user_id = (select auth.uid())
+      and mine.role = 'broker'::public.app_role
+      and (mine.created_at, mine.id) = (
+        select first_broker.created_at, first_broker.id
+        from public.user_roles first_broker
+        where first_broker.role = 'broker'::public.app_role
+        order by first_broker.created_at asc, first_broker.id asc
+        limit 1
+      )
+  );
+$;
+
 create or replace function public.grant_broker_access(p_email text)
 returns uuid
 language plpgsql
@@ -12,8 +33,8 @@ declare
   v_actor uuid := (select auth.uid());
   v_target uuid;
 begin
-  if v_actor is null or not public.has_role(v_actor, 'broker'::public.app_role) then
-    raise exception 'Only an authorised broker can grant broker access';
+  if v_actor is null or not public.is_primary_broker() then
+    raise exception 'Only the primary ApexAnchor broker can grant broker access';
   end if;
   if p_email is null or length(trim(p_email)) = 0 then
     raise exception 'Enter an email address';
@@ -42,8 +63,8 @@ declare
   v_actor uuid := (select auth.uid());
   v_count integer;
 begin
-  if v_actor is null or not public.has_role(v_actor, 'broker'::public.app_role) then
-    raise exception 'Only an authorised broker can revoke broker access';
+  if v_actor is null or not public.is_primary_broker() then
+    raise exception 'Only the primary ApexAnchor broker can revoke broker access';
   end if;
   if p_user_id = v_actor then
     raise exception 'You cannot revoke your own broker access';
@@ -74,6 +95,8 @@ as $$
   order by r.created_at asc;
 $$;
 
+revoke all on function public.is_primary_broker() from public, anon;
+grant execute on function public.is_primary_broker() to authenticated;
 revoke all on function public.grant_broker_access(text) from public, anon;
 revoke all on function public.revoke_broker_access(uuid) from public, anon;
 revoke all on function public.list_broker_access() from public, anon;
