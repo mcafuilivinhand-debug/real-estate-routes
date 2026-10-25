@@ -41,6 +41,8 @@ function SubmitAssetPage() {
     const asset = String(form.get('asset') ?? '').trim();
     const category = String(form.get('category') ?? '') as CategoryId;
     const price = String(form.get('price') ?? '').trim();
+    const currency = String(form.get('currency') ?? 'USD');
+    if (!['USD', 'EUR', 'GBP', 'CNY'].includes(currency)) { setError('Please choose USD, EUR, GBP or CNY.'); return; }
     const details = String(form.get('details') ?? '').trim();
     const photos = form.getAll('photos').filter((item): item is File => item instanceof File && item.size > 0);
     if (photos.length > 6) { setError('Please choose no more than 6 photos.'); return; }
@@ -76,7 +78,7 @@ function SubmitAssetPage() {
       category,
       title: asset,
       location: country,
-      expected_price: price,
+      expected_price: price ? `${currency} ${price}` : '',
       details,
       photo_urls: photoLinks,
     });
@@ -97,7 +99,7 @@ function SubmitAssetPage() {
       `Asset category: ${categoryLabel(category)}`,
       `Asset title: ${asset}`,
       `Location: ${country}`,
-      `Expected price: ${price || 'Not specified'}`,
+      `Expected price: ${price ? `${currency} ${price}` : 'Not specified'}`,
       '',
       'Asset details:',
       details,
@@ -126,7 +128,19 @@ function SubmitAssetPage() {
         <div><label className="field-label">Asset category</label><select name="category" required className="input-field mt-1">{CATEGORIES.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select></div>
         <div><label className="field-label">Asset title / short description</label><input name="asset" required minLength={4} maxLength={120} className="input-field mt-1" placeholder="e.g. 3-bedroom house in East Legon"/></div>
         <div><label className="field-label">Location</label><CountryCombobox value={country} onChange={value=>{setCountry(value);setEmailLink('');setWhatsappLink('');setSubmitted(false)}}/></div>
-        <div><label className="field-label">Expected price (optional)</label><input name="price" maxLength={80} className="input-field mt-1" placeholder="e.g. GHS 850,000 or GHS 4,000/month"/></div>
+        <div>
+          <label className="field-label">Expected price (optional)</label>
+          <div className="grid grid-cols-[minmax(0,1fr)_110px] gap-3 mt-1">
+            <input name="price" maxLength={80} className="input-field" placeholder="e.g. 850,000 or 4,000/month"/>
+            <select name="currency" defaultValue="USD" className="input-field" aria-label="Expected price currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="CNY">CNY</option>
+            </select>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Choose the currency for your expected price.</p>
+        </div>
         <div><label className="field-label">Tell us more about the asset</label><textarea name="details" required minLength={10} maxLength={4000} className="input-field mt-1 min-h-32" placeholder="Condition, size, features, documents available and anything the broker should know."/></div>
         <div><label className="field-label">Photos of your asset (optional)</label><input name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple className="input-field mt-1 file:mr-3 file:rounded file:border-0 file:bg-secondary file:px-3 file:py-2" /><p className="text-xs text-muted-foreground mt-2">Choose up to 6 photos from your phone gallery or computer. JPG, PNG, WEBP or GIF; maximum 8 MB per photo. Photos are attached to your private broker review request.</p></div>
         {error && <p className="text-sm text-destructive">{error}</p>}
