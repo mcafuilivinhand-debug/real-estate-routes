@@ -42,7 +42,7 @@ function SubmitAssetPage() {
     const category = String(form.get('category') ?? '') as CategoryId;
     const price = String(form.get('price') ?? '').trim();
     const currency = String(form.get('currency') ?? 'USD');
-    if (!['USD', 'EUR', 'GBP', 'CNY'].includes(currency)) { setError('Please choose USD, EUR, GBP or CNY.'); return; }
+    if (!['USD', 'EUR', 'GBP', 'CNY', 'GHS'].includes(currency)) { setError('Please choose USD, EUR, GBP, CNY or GHS.'); return; }
     const details = String(form.get('details') ?? '').trim();
     const photos = form.getAll('photos').filter((item): item is File => item instanceof File && item.size > 0);
     if (photos.length > 6) { setError('Please choose no more than 6 photos.'); return; }
@@ -137,6 +137,7 @@ function SubmitAssetPage() {
               <option value="EUR">EUR</option>
               <option value="GBP">GBP</option>
               <option value="CNY">CNY</option>
+              <option value="GHS">GHS (Ghana cedis)</option>
             </select>
           </div>
           <p className="text-xs text-muted-foreground mt-2">Choose the currency for your expected price.</p>
