@@ -14,6 +14,7 @@ function SubmitAssetPage() {
   const [country, setCountry] = useState('');
   const [emailLink, setEmailLink] = useState('');
   const [whatsappLink, setWhatsappLink] = useState('');
+  const [notificationStatus, setNotificationStatus] = useState('');
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -34,6 +35,7 @@ function SubmitAssetPage() {
   async function prepareRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
+    setNotificationStatus('');
     setSubmitted(false);
     const form = new FormData(event.currentTarget);
     const name = String(form.get('name') ?? '').trim();
@@ -67,9 +69,8 @@ function SubmitAssetPage() {
       return;
     }
 
-    // Generate the reference in the browser so a public seller can insert without
-    // requesting a returned row (asset_requests SELECT is intentionally broker-only).
     const requestId = crypto.randomUUID();
+    const expectedPrice = price ? `${currency} ${price}` : 'Not specified';
     const { error: requestError } = await supabase.from('asset_requests').insert({
       id: requestId,
       owner_name: name,
@@ -89,6 +90,35 @@ function SubmitAssetPage() {
       return;
     }
 
+    const notification = await supabase.functions.invoke('asset-request-notify', {
+      body: {
+        requestId,
+        ownerName: name,
+        ownerPhone: phone,
+        kind: kind === 'sale' ? 'Sell' : 'Rent',
+        category: categoryLabel(category),
+        assetTitle: asset,
+        location: country,
+        expectedPrice,
+        details,
+        photoUrls: photoLinks,
+      },
+    });
+
+    if (notification.error) {
+      console.error('ApexAnchor notification delivery failed:', notification.error);
+      setNotificationStatus('Your request was saved, but automatic notifications could not be delivered. Please use the contact buttons below.');
+    } else {
+      const delivery = notification.data as { emailSent?: boolean; whatsappSent?: boolean; errors?: string[] } | null;
+      const sent = [delivery?.emailSent ? 'email' : '', delivery?.whatsappSent ? 'WhatsApp' : ''].filter(Boolean);
+      setNotificationStatus(sent.length === 2
+        ? 'Automatic email and WhatsApp notifications sent to the broker.'
+        : sent.length
+          ? `Automatic ${sent[0]} notification sent. The other notification needs configuration.`
+          : 'Your request was saved, but notification providers need configuration. Please use the contact buttons below.');
+      if (delivery?.errors?.length) console.error('ApexAnchor notification provider errors:', delivery.errors);
+    }
+
     const message = [
       'APEXANCHOR — NEW ASSET REQUEST',
       `Request reference: ${requestId}`,
@@ -99,7 +129,7 @@ function SubmitAssetPage() {
       `Asset category: ${categoryLabel(category)}`,
       `Asset title: ${asset}`,
       `Location: ${country}`,
-      `Expected price: ${price ? `${currency} ${price}` : 'Not specified'}`,
+      `Expected price: ${expectedPrice}`,
       '',
       'Asset details:',
       details,
@@ -133,11 +163,7 @@ function SubmitAssetPage() {
           <div className="grid grid-cols-[minmax(0,1fr)_110px] gap-3 mt-1">
             <input name="price" maxLength={80} className="input-field" placeholder="e.g. 850,000 or 4,000/month"/>
             <select name="currency" defaultValue="USD" className="input-field" aria-label="Expected price currency">
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="CNY">CNY</option>
-              <option value="GHS">GHS (Ghana cedis)</option>
+              <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="CNY">CNY</option><option value="GHS">GHS (Ghana cedis)</option>
             </select>
           </div>
           <p className="text-xs text-muted-foreground mt-2">Choose the currency for your expected price.</p>
@@ -151,7 +177,7 @@ function SubmitAssetPage() {
     {(emailLink || whatsappLink) && <div className="card-warm p-6 mt-5 space-y-3">
       <p className="eyebrow text-emerald-700">{submitted ? 'Request received' : 'Request ready'}</p>
       <h2 className="font-editorial text-2xl">{submitted ? 'Your asset is awaiting broker review' : 'Choose how to contact ApexAnchor'}</h2>
-      <p className="text-sm text-muted-foreground">{submitted ? 'Your request and photos have been saved securely for the ApexAnchor broker. You can also send the reference to the broker by email or WhatsApp.' : 'Your request is ready. Choose one option to send its reference to the broker.'}</p>
+      <p className="text-sm text-muted-foreground">{notificationStatus || 'Your request and photos have been saved securely for the ApexAnchor broker.'}</p>
       <a href={emailLink} className="btn-primary w-full text-center block">Email the broker · {BROKER_EMAIL}</a>
       <a href={whatsappLink} target="_blank" rel="noreferrer" className="btn-outline w-full text-center block">WhatsApp the broker · +233 55 787 3406</a>
       {isBroker && <Link to="/broker" className="btn-outline w-full text-center block">Open broker review</Link>}
